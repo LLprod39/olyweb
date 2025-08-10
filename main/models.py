@@ -29,8 +29,14 @@ class News(models.Model):
         ordering = ['-created_at']
     
     def save(self, *args, **kwargs):
-        if not self.slug or self.slug == '':
-            self.slug = slugify(self.title)
+        if not self.slug:
+            base_slug = slugify(self.title)
+            slug = base_slug
+            counter = 1
+            while News.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
         super().save(*args, **kwargs)
     
     def get_absolute_url(self):
@@ -74,8 +80,15 @@ class UsefulMaterial(models.Model):
         ordering = ['-created_at']
     
     def save(self, *args, **kwargs):
-        if not self.slug or self.slug == '':
-            self.slug = slugify(self.title)
+        if not self.slug:
+            base_slug = slugify(self.title)
+            slug = base_slug
+            counter = 1
+            # Check for both News and UsefulMaterial to avoid slug collision across models if they share a URL space
+            while UsefulMaterial.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
         super().save(*args, **kwargs)
     
     def get_absolute_url(self):
