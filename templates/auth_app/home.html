@@ -1,0 +1,511 @@
+{% extends 'base.html' %}
+
+{% block title %}Eternal Clan - Throne and Liberty{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        ETERNAL CLAN
+                        <span class="text-gradient">THRONE AND LIBERTY</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Присоединяйтесь к легендарному клану в мире Solisium. 
+                        Вместе мы покорим вершины власти и славы в эпических битвах за трон и свободу.
+                    </p>
+                    
+                    {% if not user.is_authenticated %}
+                        <div class="hero-buttons">
+                            <a href="{% url 'auth:register' %}" class="btn btn-primary btn-lg me-3 glow">
+                                <i class="fas fa-crown me-2"></i>ПРИСОЕДИНИТЬСЯ
+                            </a>
+                            <a href="{% url 'auth:login' %}" class="btn btn-outline-primary btn-lg">
+                                <i class="fas fa-sign-in-alt me-2"></i>ВОЙТИ В КЛАН
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-visual">
+                    <div class="clan-banner">
+                        <div class="banner-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="banner-text">
+                            <h3>ETERNAL</h3>
+                            <p>Ведущий клан Solisium</p>
+                        </div>
+                    </div>
+                    <div class="floating-weapons">
+                        <div class="weapon-icon">⚔️</div>
+                        <div class="weapon-icon">🛡️</div>
+                        <div class="weapon-icon">🏹</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if user.is_authenticated %}
+<!-- Dashboard Section -->
+<section class="dashboard-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="welcome-card card fantasy-border">
+                    <div class="card-body">
+                        <div class="welcome-content">
+                            <div class="user-avatar">
+                                {% if user.profile.avatar %}
+                                    <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="avatar-img">
+                                {% else %}
+                                    <div class="avatar-placeholder">
+                                        <i class="fas fa-user-shield"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="welcome-text">
+                                <h2>Добро пожаловать, {{ user.first_name|default:user.username }}!</h2>
+                                <p>Ваш путь в Eternal Clan начинается здесь</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="action-card card">
+                    <div class="card-body text-center">
+                        <div class="action-icon">
+                            <i class="fas fa-user-edit"></i>
+                        </div>
+                        <h4>Профиль воина</h4>
+                        <p>Настройте свой профиль и покажите свою силу</p>
+                        <a href="{% url 'auth:profile' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-edit me-1"></i>Редактировать
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="action-card card">
+                    <div class="card-body text-center">
+                        <div class="action-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <h4>Новости клана</h4>
+                        <p>Будьте в курсе событий и стратегий клана</p>
+                        <a href="{% url 'main:news_list' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-newspaper me-1"></i>Читать
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="action-card card">
+                    <div class="card-body text-center">
+                        <div class="action-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h4>Братство</h4>
+                        <p>Общайтесь с соратниками и планируйте битвы</p>
+                        <a href="#members" class="btn btn-primary btn-lg">
+                            <i class="fas fa-users me-1"></i>Участники
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Features Section -->
+<section class="features-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title">СИЛА КЛАНА</h2>
+                <p class="section-subtitle">Наши преимущества в мире Throne and Liberty</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="feature-card card">
+                    <div class="card-body text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>Эпические битвы</h4>
+                        <p>Участвуйте в масштабных PvP сражениях и рейдах</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="feature-card card">
+                    <div class="card-body text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <h4>Территориальная власть</h4>
+                        <p>Захватывайте и удерживайте стратегические точки</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="feature-card card">
+                    <div class="card-body text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4>Развитие персонажа</h4>
+                        <p>Система прогрессии и кастомизации героев</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="feature-card card">
+                    <div class="card-body text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h4>Стратегическое планирование</h4>
+                        <p>Координация действий и тактическое планирование</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+{% if clan_stats %}
+<section class="stats-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title">СТАТИСТИКА КЛАНА</h2>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stats-number">{{ clan_stats.total_members }}</div>
+                    <div class="stats-label">Воин</div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-circle text-success"></i>
+                    </div>
+                    <div class="stats-number">{{ clan_stats.online_members }}</div>
+                    <div class="stats-label">В бою</div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stats-number">{{ clan_stats.clan_level }}</div>
+                    <div class="stats-label">Уровень клана</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Latest News Section -->
+{% if latest_news %}
+<section class="news-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title">ПОСЛЕДНИЕ ВЕСТИ</h2>
+                <p class="section-subtitle">Новости из мира Solisium</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            {% for news in latest_news %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="news-card">
+                    {% if news.image %}
+                        <div class="news-image" style="background-image: url('{{ news.image.url }}')">
+                            <div class="news-category">{{ news.get_category_display }}</div>
+                        </div>
+                    {% endif %}
+                    <div class="news-content">
+                        <h4 class="news-title">{{ news.title }}</h4>
+                        <p class="news-excerpt">{{ news.content|truncatewords:20 }}</p>
+                        <div class="news-meta">
+                            <span class="news-date">
+                                <i class="fas fa-calendar me-1"></i>
+                                {{ news.created_at|date:"d.m.Y" }}
+                            </span>
+                            <a href="{{ news.get_absolute_url }}" class="btn btn-sm btn-outline-primary">
+                                Читать
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="row">
+            <div class="col-12 text-center">
+                <a href="{% url 'main:news_list' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-newspaper me-2"></i>Все новости
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CTA Section -->
+{% if not user.is_authenticated %}
+<section class="cta-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="cta-content">
+                    <h2>ГОТОВЫ К ЭПИЧЕСКИМ ПРИКЛЮЧЕНИЯМ?</h2>
+                    <p>Присоединяйтесь к Eternal Clan и станьте частью легенды в мире Throne and Liberty</p>
+                    <div class="cta-buttons">
+                        <a href="{% url 'auth:register' %}" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-user-plus me-2"></i>Создать аккаунт
+                        </a>
+                        <a href="{% url 'main:join_clan' %}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-shield-alt me-2"></i>Вступить в клан
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<style>
+/* Дополнительные стили для главной страницы */
+.hero-visual {
+    position: relative;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clan-banner {
+    background: var(--secondary-bg);
+    border: 2px solid var(--accent-gold);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: var(--shadow-gold);
+    position: relative;
+    z-index: 2;
+}
+
+.banner-icon {
+    font-size: 3rem;
+    color: var(--accent-gold);
+    margin-bottom: 1rem;
+}
+
+.banner-text h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent-gold);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.banner-text p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.floating-weapons {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.weapon-icon {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.3;
+    animation: float 4s ease-in-out infinite;
+}
+
+.weapon-icon:nth-child(1) {
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.weapon-icon:nth-child(2) {
+    top: 60%;
+    right: 15%;
+    animation-delay: 1s;
+}
+
+.weapon-icon:nth-child(3) {
+    bottom: 30%;
+    left: 20%;
+    animation-delay: 2s;
+}
+
+.welcome-card {
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+}
+
+.welcome-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.user-avatar {
+    flex-shrink: 0;
+}
+
+.avatar-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--accent-gold);
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--tertiary-bg);
+    border: 3px solid var(--accent-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--accent-gold);
+}
+
+.welcome-text h2 {
+    font-family: 'Cinzel', serif;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.welcome-text p {
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.action-card {
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.action-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+}
+
+.action-icon {
+    font-size: 3rem;
+    color: var(--accent-gold);
+    margin-bottom: 1.5rem;
+}
+
+.action-card h4 {
+    font-family: 'Cinzel', serif;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.action-card p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.feature-card {
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    color: var(--accent-gold);
+    margin-bottom: 1.5rem;
+}
+
+.feature-card h4 {
+    font-family: 'Cinzel', serif;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.feature-card p {
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .hero-visual {
+        height: 300px;
+        margin-top: 2rem;
+    }
+    
+    .clan-banner {
+        padding: 1.5rem;
+    }
+    
+    .banner-icon {
+        font-size: 2rem;
+    }
+    
+    .banner-text h3 {
+        font-size: 1.5rem;
+    }
+    
+    .welcome-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+}
+</style>
+{% endblock %} 

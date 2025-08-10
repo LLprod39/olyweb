@@ -1,0 +1,517 @@
+{% extends 'base.html' %}
+
+{% block title %}Присоединиться к клану - Eternal Clan{% endblock %}
+
+{% block content %}
+<section class="auth-hero">
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-8 col-lg-6">
+                <!-- Hero Badge -->
+                <div class="auth-badge text-center mb-4">
+                    <i class="fas fa-user-plus me-2"></i>
+                    ПРИСОЕДИНЕНИЕ К КЛАНУ
+                </div>
+                
+                <!-- Auth Card -->
+                <div class="card auth-card fantasy-border">
+                    <div class="auth-header">
+                        <div class="auth-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <h2 class="auth-title">СТАНЬ ВОИНОМ</h2>
+                        <p class="auth-subtitle">Присоединяйтесь к легендарному Eternal Clan</p>
+                    </div>
+                    
+                    <form method="post" class="auth-form">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.first_name.id_for_label }}" class="form-label">
+                                        <i class="fas fa-user-shield"></i>
+                                        ИМЯ ВОИНА
+                                    </label>
+                                    {{ form.first_name }}
+                                    {% if form.first_name.errors %}
+                                        <div class="error-message">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                            {{ form.first_name.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.last_name.id_for_label }}" class="form-label">
+                                        <i class="fas fa-user-shield"></i>
+                                        ФАМИЛИЯ ВОИНА
+                                    </label>
+                                    {{ form.last_name }}
+                                    {% if form.last_name.errors %}
+                                        <div class="error-message">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                            {{ form.last_name.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="{{ form.username.id_for_label }}" class="form-label">
+                                <i class="fas fa-at"></i>
+                                ИМЯ ПОЛЬЗОВАТЕЛЯ
+                            </label>
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                                <div class="error-message">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    {{ form.username.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">
+                                <i class="fas fa-envelope"></i>
+                                EMAIL АДРЕС
+                            </label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="error-message">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    {{ form.email.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="{{ form.password1.id_for_label }}" class="form-label">
+                                <i class="fas fa-lock"></i>
+                                ПАРОЛЬ
+                            </label>
+                            {{ form.password1 }}
+                            {% if form.password1.errors %}
+                                <div class="error-message">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    {{ form.password1.errors.0 }}
+                                </div>
+                            {% endif %}
+                            {% if form.password1.help_text %}
+                                <div class="help-text">
+                                    <i class="fas fa-info-circle"></i>
+                                    {{ form.password1.help_text }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="{{ form.password2.id_for_label }}" class="form-label">
+                                <i class="fas fa-lock"></i>
+                                ПОДТВЕРЖДЕНИЕ ПАРОЛЯ
+                            </label>
+                            {{ form.password2 }}
+                            {% if form.password2.errors %}
+                                <div class="error-message">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    {{ form.password2.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block glow">
+                            <i class="fas fa-user-plus me-2"></i>
+                            ПРИСОЕДИНИТЬСЯ К КЛАНУ
+                        </button>
+                    </form>
+                    
+                    <div class="auth-footer">
+                        <div class="divider">
+                            <span>или</span>
+                        </div>
+                        <p class="auth-link-text">
+                            Уже есть аккаунт? 
+                            <a href="{% url 'auth:login' %}" class="auth-link">
+                                <i class="fas fa-sign-in-alt me-1"></i>
+                                ВОЙТИ В КЛАН
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Floating Elements -->
+                <div class="floating-elements">
+                    <div class="floating-element" style="top: 10%; left: 10%; animation-delay: 0s;">⚔️</div>
+                    <div class="floating-element" style="top: 20%; right: 15%; animation-delay: 1s;">🛡️</div>
+                    <div class="floating-element" style="bottom: 30%; left: 20%; animation-delay: 2s;">🏹</div>
+                    <div class="floating-element" style="bottom: 20%; right: 10%; animation-delay: 3s;">⚜️</div>
+                    <div class="floating-element" style="top: 50%; left: 5%; animation-delay: 4s;">🗡️</div>
+                    <div class="floating-element" style="top: 60%; right: 5%; animation-delay: 5s;">🔮</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Auth Hero Section */
+.auth-hero {
+    background: var(--gradient-hero);
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.auth-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(203, 162, 95, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(59, 141, 255, 0.1) 0%, transparent 50%),
+        linear-gradient(45deg, transparent 30%, rgba(203, 162, 95, 0.05) 50%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Auth Badge */
+.auth-badge {
+    display: inline-block;
+    background: rgba(203, 162, 95, 0.2);
+    color: var(--accent-gold);
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid var(--accent-gold);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2rem;
+}
+
+/* Auth Card */
+.auth-card {
+    background: var(--secondary-bg);
+    border-radius: 12px;
+    box-shadow: var(--shadow-dark);
+    overflow: hidden;
+    position: relative;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(203, 162, 95, 0.2);
+}
+
+.auth-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-gold);
+}
+
+/* Auth Header */
+.auth-header {
+    text-align: center;
+    padding: 2rem 2rem 1rem;
+    background: var(--tertiary-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.auth-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--gradient-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2rem;
+    color: var(--primary-bg);
+    box-shadow: var(--shadow-gold);
+    position: relative;
+}
+
+.auth-icon::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 2px solid var(--accent-gold);
+    border-radius: 50%;
+    background: linear-gradient(45deg, transparent 30%, rgba(203, 162, 95, 0.3) 50%, transparent 70%);
+    animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.auth-title {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 20px rgba(203, 162, 95, 0.3);
+}
+
+.auth-subtitle {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Auth Form */
+.auth-form {
+    padding: 2rem;
+}
+
+/* Улучшенные отступы для форм */
+.auth-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.auth-form .form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+}
+
+.form-label i {
+    color: var(--accent-gold);
+}
+
+/* Form Controls */
+.form-control {
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-primary);
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.form-control:focus {
+    background: var(--tertiary-bg);
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 3px rgba(203, 162, 95, 0.1);
+    color: var(--text-primary);
+    outline: none;
+}
+
+/* Error Messages */
+.error-message {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent-red);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(213, 76, 76, 0.1);
+    border-radius: 4px;
+    border-left: 3px solid var(--accent-red);
+}
+
+/* Help Text */
+.help-text {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(203, 162, 95, 0.1);
+    border-radius: 4px;
+    border-left: 3px solid var(--accent-gold);
+}
+
+.help-text i {
+    color: var(--accent-gold);
+    margin-top: 0.1rem;
+}
+
+/* Submit Button */
+.btn-primary {
+    margin-top: 1rem;
+}
+
+/* Glow Animation */
+.glow {
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 20px rgba(203, 162, 95, 0.4);
+    }
+    to {
+        box-shadow: 0 0 30px rgba(203, 162, 95, 0.6);
+    }
+}
+
+/* Auth Footer */
+.auth-footer {
+    padding: 1.5rem 2rem 2rem;
+    text-align: center;
+    background: var(--tertiary-bg);
+    border-top: 1px solid var(--border-color);
+}
+
+.divider {
+    position: relative;
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--border-color);
+}
+
+.divider span {
+    background: var(--tertiary-bg);
+    padding: 0 1rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.auth-link-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.auth-link {
+    color: var(--accent-gold);
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.auth-link:hover {
+    color: #e6c78e;
+    text-shadow: 0 0 10px rgba(203, 162, 95, 0.5);
+}
+
+/* Floating Elements */
+.floating-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.floating-element {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.3;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+        opacity: 0.6;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .auth-title {
+        font-size: 1.5rem;
+    }
+    
+    .auth-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+    
+    .auth-form,
+    .auth-header,
+    .auth-footer {
+        padding: 1.5rem;
+    }
+    
+    .floating-elements {
+        display: none;
+    }
+    
+    .form-label {
+        font-size: 0.8rem;
+    }
+}
+
+/* Additional Fantasy Elements */
+.auth-card::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(203, 162, 95, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Form Row Responsive */
+@media (max-width: 576px) {
+    .row .col-md-6 {
+        margin-bottom: 1rem;
+    }
+    
+    .row .col-md-6:last-child {
+        margin-bottom: 0;
+    }
+}
+</style>
+{% endblock %} 

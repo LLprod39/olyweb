@@ -1,0 +1,1057 @@
+{% extends 'base.html' %}
+
+{% block title %}Профиль воина - Eternal Clan{% endblock %}
+
+{% block content %}
+<section class="profile-hero">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Hero Badge -->
+                <div class="profile-badge text-center mb-4">
+                    <i class="fas fa-shield-alt me-2"></i>
+                    ПРОФИЛЬ ВОИНА
+                </div>
+                
+                <!-- Hero Title -->
+                <div class="text-center mb-5">
+                    <h1 class="profile-title">ЛИЧНЫЕ ДАННЫЕ</h1>
+                    <p class="profile-subtitle">Управляйте своим профилем в Eternal Clan</p>
+                </div>
+                
+                <!-- Profile Card -->
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar-section">
+                            <div class="profile-avatar">
+                                {% if user.profile.avatar %}
+                                    <img src="{{ user.profile.avatar.url }}" alt="Avatar" class="avatar-img">
+                                {% else %}
+                                    <div class="avatar-placeholder">
+                                        <i class="fas fa-crown"></i>
+                                    </div>
+                                {% endif %}
+                                <div class="avatar-frame"></div>
+                                <div class="avatar-upload-overlay">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                            </div>
+                            <div class="profile-status">
+                                <div class="status-indicator online">
+                                    <i class="fas fa-circle"></i>
+                                    <span>В сети</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-info">
+                            <h2 class="warrior-name">{{ user.get_full_name|default:user.username }}</h2>
+                            <p class="warrior-email">{{ user.email }}</p>
+                            <div class="warrior-stats">
+                                <div class="stat-item">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <span class="stat-number">{{ user.date_joined|date:"d.m.Y" }}</span>
+                                        <span class="stat-label">ДАТА РЕГИСТРАЦИИ</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <span class="stat-number">{{ user.last_login|date:"d.m.Y" }}</span>
+                                        <span class="stat-label">ПОСЛЕДНИЙ ВХОД</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <form method="post" enctype="multipart/form-data" class="profile-form">
+                        {% csrf_token %}
+                        
+                        <div class="form-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="fas fa-scroll"></i>
+                                </div>
+                                <h3 class="section-title">ОСНОВНАЯ ИНФОРМАЦИЯ</h3>
+                                <div class="section-line"></div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ u_form.first_name.id_for_label }}" class="form-label">
+                                            <i class="fas fa-user-shield"></i>
+                                            ИМЯ ВОИНА
+                                        </label>
+                                        {{ u_form.first_name }}
+                                        {% if u_form.first_name.errors %}
+                                            <div class="error-message">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                                {{ u_form.first_name.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ u_form.last_name.id_for_label }}" class="form-label">
+                                            <i class="fas fa-user-shield"></i>
+                                            ФАМИЛИЯ ВОИНА
+                                        </label>
+                                        {{ u_form.last_name }}
+                                        {% if u_form.last_name.errors %}
+                                            <div class="error-message">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                                {{ u_form.last_name.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="{{ u_form.username.id_for_label }}" class="form-label">
+                                    <i class="fas fa-at"></i>
+                                    ИМЯ ПОЛЬЗОВАТЕЛЯ
+                                </label>
+                                {{ u_form.username }}
+                                {% if u_form.username.errors %}
+                                    <div class="error-message">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        {{ u_form.username.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="{{ u_form.email.id_for_label }}" class="form-label">
+                                    <i class="fas fa-envelope"></i>
+                                    EMAIL АДРЕС
+                                </label>
+                                {{ u_form.email }}
+                                {% if u_form.email.errors %}
+                                    <div class="error-message">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        {{ u_form.email.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="form-section">
+                            <div class="section-header">
+                                <div class="section-icon">
+                                    <i class="fas fa-gem"></i>
+                                </div>
+                                <h3 class="section-title">ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ</h3>
+                                <div class="section-line"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="{{ p_form.bio.id_for_label }}" class="form-label">
+                                    <i class="fas fa-scroll"></i>
+                                    О СЕБЕ
+                                </label>
+                                {{ p_form.bio }}
+                                {% if p_form.bio.errors %}
+                                    <div class="error-message">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        {{ p_form.bio.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="{{ p_form.birth_date.id_for_label }}" class="form-label">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    ДАТА РОЖДЕНИЯ
+                                </label>
+                                {{ p_form.birth_date }}
+                                {% if p_form.birth_date.errors %}
+                                    <div class="error-message">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        {{ p_form.birth_date.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="{{ p_form.avatar.id_for_label }}" class="form-label">
+                                    <i class="fas fa-image"></i>
+                                    АВАТАР ВОИНА
+                                </label>
+                                <div class="avatar-upload-wrapper">
+                                    {{ p_form.avatar }}
+                                    <div class="upload-hint">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <span>Нажмите для выбора файла или перетащите изображение</span>
+                                    </div>
+                                </div>
+                                {% if p_form.avatar.errors %}
+                                    <div class="error-message">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        {{ p_form.avatar.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary btn-lg glow">
+                                <i class="fas fa-save me-2"></i>
+                                СОХРАНИТЬ ИЗМЕНЕНИЯ
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Profile Hero Section */
+.profile-hero {
+    background: var(--gradient-hero);
+    position: relative;
+    overflow: hidden;
+    padding: 4rem 0;
+    min-height: 100vh;
+}
+
+.profile-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(203, 162, 95, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(59, 141, 255, 0.1) 0%, transparent 50%),
+        linear-gradient(45deg, transparent 30%, rgba(203, 162, 95, 0.05) 50%, transparent 70%);
+    pointer-events: none;
+    animation: backgroundShift 20s ease-in-out infinite;
+}
+
+@keyframes backgroundShift {
+    0%, 100% { transform: translateX(0) translateY(0); }
+    25% { transform: translateX(-10px) translateY(-10px); }
+    50% { transform: translateX(10px) translateY(-5px); }
+    75% { transform: translateX(-5px) translateY(10px); }
+}
+
+/* Profile Badge */
+.profile-badge {
+    display: inline-block;
+    background: rgba(203, 162, 95, 0.15);
+    color: var(--accent-gold);
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: 2px solid var(--accent-gold);
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(203, 162, 95, 0.2);
+    animation: badgeGlow 3s ease-in-out infinite;
+}
+
+@keyframes badgeGlow {
+    0%, 100% { box-shadow: 0 4px 20px rgba(203, 162, 95, 0.2); }
+    50% { box-shadow: 0 4px 30px rgba(203, 162, 95, 0.4); }
+}
+
+/* Profile Title */
+.profile-title {
+    font-family: 'Cinzel', serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-gold) 0%, #e6c78e 50%, var(--accent-gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 30px rgba(203, 162, 95, 0.3);
+    margin-bottom: 1rem;
+    animation: titleFloat 4s ease-in-out infinite;
+}
+
+@keyframes titleFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.profile-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+/* Profile Card */
+.profile-card {
+    background: rgba(30, 30, 38, 0.8);
+    border-radius: 20px;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(203, 162, 95, 0.1);
+    overflow: hidden;
+    position: relative;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(203, 162, 95, 0.2);
+}
+
+.profile-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: var(--gradient-gold);
+    box-shadow: 0 0 20px rgba(203, 162, 95, 0.5);
+}
+
+/* Profile Header */
+.profile-header {
+    display: flex;
+    align-items: center;
+    padding: 3rem;
+    background: linear-gradient(135deg, rgba(21, 21, 28, 0.9) 0%, rgba(30, 30, 38, 0.9) 100%);
+    border-bottom: 1px solid rgba(203, 162, 95, 0.2);
+    position: relative;
+}
+
+.profile-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--accent-gold) 50%, transparent 100%);
+}
+
+.profile-avatar-section {
+    position: relative;
+    margin-right: 3rem;
+}
+
+.profile-avatar {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--gradient-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.profile-avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(203, 162, 95, 0.6);
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.avatar-placeholder {
+    font-size: 3.5rem;
+    color: var(--primary-bg);
+    animation: crownGlow 2s ease-in-out infinite;
+}
+
+@keyframes crownGlow {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+.avatar-frame {
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+    border: 3px solid var(--accent-gold);
+    border-radius: 50%;
+    background: linear-gradient(45deg, transparent 30%, rgba(203, 162, 95, 0.3) 50%, transparent 70%);
+    animation: rotate 6s linear infinite;
+    pointer-events: none;
+}
+
+.avatar-upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+}
+
+.profile-avatar:hover .avatar-upload-overlay {
+    opacity: 1;
+}
+
+.avatar-upload-overlay i {
+    color: var(--accent-gold);
+    font-size: 2rem;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.profile-status {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(10px);
+}
+
+.status-indicator.online {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4caf50;
+    border: 2px solid rgba(76, 175, 80, 0.4);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
+}
+
+.status-indicator i {
+    font-size: 0.7rem;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Profile Info */
+.profile-info {
+    flex: 1;
+}
+
+.warrior-name {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-gold) 0%, #e6c78e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.warrior-email {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    font-weight: 500;
+}
+
+.warrior-stats {
+    display: flex;
+    gap: 3rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: rgba(203, 162, 95, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(203, 162, 95, 0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    background: rgba(203, 162, 95, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(203, 162, 95, 0.2);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--gradient-gold);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-bg);
+    font-size: 1.2rem;
+    box-shadow: 0 4px 15px rgba(203, 162, 95, 0.3);
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-number {
+    font-family: 'Cinzel', serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--accent-gold);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    margin-top: 0.25rem;
+}
+
+/* Form Sections */
+.form-section {
+    padding: 3rem;
+    border-bottom: 1px solid rgba(203, 162, 95, 0.1);
+    position: relative;
+}
+
+.form-section:last-of-type {
+    border-bottom: none;
+}
+
+.form-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(203, 162, 95, 0.2) 50%, transparent 100%);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    gap: 1.5rem;
+}
+
+.section-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--gradient-gold);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-bg);
+    font-size: 1.5rem;
+    box-shadow: 0 8px 25px rgba(203, 162, 95, 0.3);
+}
+
+.section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-gold) 0%, #e6c78e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.section-line {
+    flex: 1;
+    height: 3px;
+    background: var(--gradient-gold);
+    margin-left: 1.5rem;
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(203, 162, 95, 0.3);
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 2rem;
+}
+
+.form-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 1rem;
+}
+
+.form-label i {
+    color: var(--accent-gold);
+    font-size: 1.1rem;
+}
+
+/* Form Controls - Универсальные стили для всех полей ввода */
+.form-control,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+input[type="number"],
+textarea,
+select {
+    background: linear-gradient(135deg, rgba(21, 21, 28, 0.9) 0%, rgba(30, 30, 38, 0.9) 100%);
+    border: 2px solid rgba(203, 162, 95, 0.3);
+    border-radius: 16px;
+    color: var(--text-primary);
+    padding: 1.25rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(15px);
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-control:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+    background: linear-gradient(135deg, rgba(21, 21, 28, 1) 0%, rgba(30, 30, 38, 1) 100%);
+    border-color: var(--accent-gold);
+    box-shadow: 
+        0 0 0 4px rgba(203, 162, 95, 0.15),
+        0 8px 30px rgba(203, 162, 95, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+    transform: translateY(-3px);
+}
+
+.form-control::placeholder,
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder,
+input[type="tel"]::placeholder,
+input[type="url"]::placeholder,
+input[type="search"]::placeholder,
+textarea::placeholder {
+    color: var(--text-muted);
+    font-weight: 400;
+    opacity: 0.7;
+}
+
+/* Специальные стили для input[type="date"] */
+input[type="date"] {
+    position: relative;
+    cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background: var(--gradient-gold);
+    border-radius: 8px;
+    padding: 4px;
+    cursor: pointer;
+    filter: invert(1);
+    transition: all 0.3s ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(203, 162, 95, 0.3);
+}
+
+/* Стили для автозаполнения браузера */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px rgba(21, 21, 28, 0.9) inset !important;
+    -webkit-text-fill-color: var(--text-primary) !important;
+    transition: background-color 5000s ease-in-out 0s;
+    background: linear-gradient(135deg, rgba(21, 21, 28, 0.9) 0%, rgba(30, 30, 38, 0.9) 100%) !important;
+}
+
+/* Стили для Firefox автозаполнения */
+input:-moz-autofill {
+    background: linear-gradient(135deg, rgba(21, 21, 28, 0.9) 0%, rgba(30, 30, 38, 0.9) 100%) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Дополнительные стили для улучшения внешнего вида */
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover,
+input[type="date"]:hover,
+input[type="tel"]:hover,
+input[type="url"]:hover,
+input[type="search"]:hover,
+input[type="number"]:hover,
+textarea:hover,
+select:hover {
+    border-color: rgba(203, 162, 95, 0.5);
+    box-shadow: 
+        0 6px 25px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Специальные стили для textarea */
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.6;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Стили для input[type="file"] */
+input[type="file"].form-control {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+input[type="file"].form-control::-webkit-file-upload-button {
+    background: var(--gradient-gold);
+    border: none;
+    color: var(--primary-bg);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 1rem;
+    transition: all 0.3s ease;
+}
+
+input[type="file"].form-control::-webkit-file-upload-button:hover {
+    background: linear-gradient(135deg, #e6c78e 0%, #d4af7a 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(203, 162, 95, 0.3);
+}
+
+/* Avatar Upload Wrapper */
+.avatar-upload-wrapper {
+    position: relative;
+    border: 2px dashed rgba(203, 162, 95, 0.3);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(21, 21, 28, 0.6) 0%, rgba(30, 30, 38, 0.6) 100%);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.avatar-upload-wrapper:hover {
+    border-color: var(--accent-gold);
+    background: linear-gradient(135deg, rgba(21, 21, 28, 0.8) 0%, rgba(30, 30, 38, 0.8) 100%);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 30px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(203, 162, 95, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.avatar-upload-wrapper input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.upload-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.upload-hint i {
+    font-size: 2rem;
+    color: var(--accent-gold);
+    animation: uploadPulse 2s ease-in-out infinite;
+}
+
+@keyframes uploadPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.upload-hint span {
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+/* Error Messages */
+.error-message {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--accent-red);
+    font-size: 0.95rem;
+    margin-top: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: rgba(213, 76, 76, 0.1);
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-red);
+    backdrop-filter: blur(10px);
+}
+
+/* Form Actions */
+.form-actions {
+    padding: 3rem;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(21, 21, 28, 0.9) 0%, rgba(30, 30, 38, 0.9) 100%);
+    border-top: 1px solid rgba(203, 162, 95, 0.2);
+}
+
+.btn-primary {
+    background: var(--gradient-gold);
+    border: none;
+    color: var(--primary-bg);
+    padding: 1.25rem 3rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(203, 162, 95, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #e6c78e 0%, #d4af7a 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(203, 162, 95, 0.4);
+}
+
+/* Glow Animation */
+.glow {
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 8px 25px rgba(203, 162, 95, 0.3);
+    }
+    to {
+        box-shadow: 0 8px 35px rgba(203, 162, 95, 0.5);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-hero {
+        padding: 2rem 0;
+        min-height: auto;
+    }
+    
+    .profile-title {
+        font-size: 2.5rem;
+        letter-spacing: 2px;
+    }
+    
+    .profile-subtitle {
+        font-size: 1rem;
+    }
+    
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem;
+    }
+    
+    .profile-avatar-section {
+        margin-right: 0;
+        margin-bottom: 2rem;
+    }
+    
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .warrior-name {
+        font-size: 2rem;
+    }
+    
+    .warrior-stats {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+    
+    .stat-item {
+        padding: 0.75rem 1rem;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .section-line {
+        width: 100%;
+        margin-left: 0;
+    }
+    
+    .form-section {
+        padding: 2rem;
+    }
+    
+    .form-actions {
+        padding: 2rem;
+    }
+    
+    .btn-primary {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+    }
+    
+    /* Мобильные стили для полей ввода */
+    .form-control,
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="date"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="search"],
+    input[type="number"],
+    textarea,
+    select {
+        padding: 1rem 1.25rem;
+        font-size: 1rem;
+        border-radius: 12px;
+    }
+    
+    textarea.form-control,
+    textarea {
+        min-height: 100px;
+    }
+    
+    .avatar-upload-wrapper {
+        padding: 1.25rem;
+    }
+    
+    .upload-hint i {
+        font-size: 1.75rem;
+    }
+    
+    .upload-hint span {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-title {
+        font-size: 2rem;
+    }
+    
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .warrior-name {
+        font-size: 1.5rem;
+    }
+    
+    .warrior-stats {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .stat-item {
+        justify-content: center;
+    }
+    
+    .form-section {
+        padding: 1.5rem;
+    }
+    
+    .form-actions {
+        padding: 1.5rem;
+    }
+}
+</style>
+{% endblock %} 

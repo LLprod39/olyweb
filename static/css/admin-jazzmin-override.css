@@ -1,0 +1,822 @@
+/* Переопределение стилей Jazzmin для Evall Clan */
+
+/* Основные переопределения Jazzmin */
+.jazzmin {
+    background-color: var(--primary-bg) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Скрытие верхней навигации */
+.navbar-nav {
+    display: none !important;
+}
+
+.navbar-expand-lg .navbar-nav {
+    display: none !important;
+}
+
+.navbar-nav .nav-link {
+    display: none !important;
+}
+
+/* Скрытие верхнего меню */
+.topmenu {
+    display: none !important;
+}
+
+.navbar-nav .dropdown-menu {
+    display: none !important;
+}
+
+/* Скрытие кнопки переключения сайдбара */
+.navbar-toggler {
+    display: none !important;
+}
+
+.navbar-toggler-icon {
+    display: none !important;
+}
+
+/* Скрытие мобильного меню */
+.navbar-collapse {
+    display: none !important;
+}
+
+.navbar-expand-lg .navbar-collapse {
+    display: none !important;
+}
+
+/* Навигация Jazzmin */
+.navbar {
+    background: rgba(11, 11, 15, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    box-shadow: var(--shadow-dark) !important;
+}
+
+.navbar-brand {
+    font-family: 'Cinzel', serif !important;
+    font-weight: 800 !important;
+    font-size: 1.75rem !important;
+    color: var(--accent-gold) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+}
+
+.navbar-brand:hover {
+    color: #e6c78e !important;
+    text-shadow: 0 0 10px rgba(203, 162, 95, 0.5) !important;
+}
+
+/* Боковая панель Jazzmin */
+.main-sidebar {
+    background: var(--secondary-bg) !important;
+    border-right: 1px solid var(--border-color) !important;
+    width: 280px !important;
+}
+
+.sidebar {
+    background: var(--secondary-bg) !important;
+    width: 280px !important;
+}
+
+/* Исправление выравнивания в боковом сайдбаре */
+.nav-sidebar {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.nav-sidebar > .nav-item {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.nav-sidebar > .nav-item > .nav-link {
+    padding: 0.875rem 1.5rem !important;
+    margin: 0.25rem 0.75rem !important;
+    border-radius: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    width: calc(100% - 1.5rem) !important;
+    box-sizing: border-box !important;
+}
+
+.nav-sidebar .nav-treeview {
+    padding-left: 1rem !important;
+    margin-left: 0.75rem !important;
+}
+
+.nav-sidebar .nav-treeview .nav-link {
+    padding: 0.625rem 1rem !important;
+    margin: 0.125rem 0.5rem !important;
+    font-size: 0.85rem !important;
+    border-radius: 4px !important;
+}
+
+/* Выравнивание иконок */
+.nav-sidebar .nav-link i {
+    width: 20px !important;
+    text-align: center !important;
+    margin-right: 0.75rem !important;
+    flex-shrink: 0 !important;
+}
+
+/* Выравнивание текста */
+.nav-sidebar .nav-link span {
+    flex: 1 !important;
+    text-align: left !important;
+}
+
+/* Дополнительные стили для улучшения выравнивания */
+.nav-sidebar .nav-item {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.nav-sidebar .nav-link {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    transition: all 0.2s ease !important;
+}
+
+.nav-sidebar .nav-link:hover {
+    background-color: rgba(203, 162, 95, 0.15) !important;
+    transform: translateX(2px) !important;
+    box-shadow: 0 2px 4px rgba(203, 162, 95, 0.2) !important;
+}
+
+/* Оптимизация производительности */
+.content-wrapper {
+    transition: margin-left 0.2s ease !important;
+}
+
+.main-sidebar {
+    transition: transform 0.2s ease !important;
+}
+
+/* Улучшение читаемости */
+.content-header h1, .content-header h2, .content-header h3 {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+    margin-bottom: 1rem !important;
+}
+
+/* Оптимизация таблиц */
+.table {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.table thead th {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    border: none !important;
+    padding: 12px 16px !important;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(203, 162, 95, 0.05) !important;
+}
+
+/* Улучшение форм */
+.form-group {
+    margin-bottom: 1rem !important;
+    padding: 0.75rem !important;
+    border-radius: 6px !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.form-group:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Кнопки действий */
+.btn-primary {
+    background: linear-gradient(135deg, #cba25f 0%, #b8945a 100%) !important;
+    color: #1a1a1a !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #d4b06f 0%, #cba25f 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 8px rgba(203, 162, 95, 0.3) !important;
+    color: #1a1a1a !important;
+}
+
+/* Стили для подменю */
+.nav-sidebar .nav-treeview {
+    background: rgba(0, 0, 0, 0.1) !important;
+    border-left: 2px solid var(--accent-gold) !important;
+    margin-left: 1rem !important;
+    border-radius: 0 4px 4px 0 !important;
+}
+
+.nav-sidebar .nav-treeview .nav-item {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.nav-sidebar .nav-treeview .nav-link {
+    padding-left: 2rem !important;
+    font-size: 0.85rem !important;
+    opacity: 0.9 !important;
+}
+
+/* Стили для активного состояния */
+.nav-sidebar .nav-link.active {
+    background: linear-gradient(135deg, #cba25f 0%, #b8945a 100%) !important;
+    color: #1a1a1a !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 8px rgba(203, 162, 95, 0.3) !important;
+    border: 1px solid #b8945a !important;
+}
+
+.nav-sidebar .nav-link.active i {
+    color: #1a1a1a !important;
+}
+
+.nav-sidebar .nav-link.active:hover {
+    background: linear-gradient(135deg, #d4b06f 0%, #cba25f 100%) !important;
+    color: #1a1a1a !important;
+}
+
+.sidebar-dark-warning .nav-sidebar > .nav-item > .nav-link {
+    color: var(--text-secondary) !important;
+    background-color: transparent !important;
+    border-radius: 4px !important;
+    margin: 0.25rem 0.5rem !important;
+    transition: all 0.3s ease !important;
+    font-weight: 500 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    font-size: 0.9rem !important;
+}
+
+.sidebar-dark-warning .nav-sidebar > .nav-item > .nav-link:hover {
+    color: var(--accent-gold) !important;
+    background-color: rgba(203, 162, 95, 0.1) !important;
+    transform: translateX(4px) !important;
+    box-shadow: var(--shadow-gold) !important;
+}
+
+.sidebar-dark-warning .nav-sidebar > .nav-item > .nav-link.active {
+    color: var(--accent-gold) !important;
+    background-color: rgba(203, 162, 95, 0.15) !important;
+    font-weight: 600 !important;
+    box-shadow: var(--shadow-gold) !important;
+}
+
+/* Карточки Jazzmin */
+.card {
+    background: var(--secondary-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    box-shadow: var(--shadow-dark) !important;
+    transition: all 0.3s ease !important;
+    overflow: hidden !important;
+    position: relative !important;
+}
+
+.card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 3px !important;
+    background: var(--gradient-gold) !important;
+    transform: scaleX(0) !important;
+    transition: transform 0.3s ease !important;
+}
+
+.card:hover::before {
+    transform: scaleX(1) !important;
+}
+
+.card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8) !important;
+}
+
+.card-header {
+    background: var(--tertiary-bg) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
+    font-family: 'Cinzel', serif !important;
+    font-weight: 600 !important;
+}
+
+.card-body {
+    background: var(--secondary-bg) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Кнопки Jazzmin */
+.btn {
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+    padding: 0.875rem 1.75rem !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    font-size: 0.9rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    min-height: 48px !important;
+}
+
+.btn-primary {
+    background: var(--gradient-gold) !important;
+    color: var(--primary-bg) !important;
+    box-shadow: var(--shadow-gold) !important;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #e6c78e, #cba25f) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 0 30px rgba(203, 162, 95, 0.5) !important;
+    color: var(--primary-bg) !important;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    color: white !important;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3) !important;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #059669, #047857) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.5) !important;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+    color: white !important;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3) !important;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.5) !important;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+    color: white !important;
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3) !important;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #d97706, #b45309) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 0 30px rgba(245, 158, 11, 0.5) !important;
+}
+
+.btn-info {
+    background: linear-gradient(135deg, #06b6d4, #0891b2) !important;
+    color: white !important;
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.3) !important;
+}
+
+.btn-info:hover {
+    background: linear-gradient(135deg, #0891b2, #0e7490) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 0 30px rgba(6, 182, 212, 0.5) !important;
+}
+
+/* Таблицы Jazzmin */
+.table {
+    background: var(--secondary-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    box-shadow: var(--shadow-dark) !important;
+    color: var(--text-primary) !important;
+}
+
+.table thead th {
+    background: var(--gradient-gold) !important;
+    color: var(--primary-bg) !important;
+    border: none !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 0.5px !important;
+    padding: 1.25rem 1rem !important;
+    font-family: 'Cinzel', serif !important;
+}
+
+.table tbody tr {
+    background: var(--secondary-bg) !important;
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    transition: all 0.3s ease !important;
+}
+
+.table tbody tr:hover {
+    background: var(--tertiary-bg) !important;
+    transform: scale(1.01) !important;
+    box-shadow: var(--shadow-gold) !important;
+}
+
+.table tbody td {
+    padding: 1.25rem 1rem !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+    vertical-align: middle !important;
+}
+
+/* Формы Jazzmin */
+.form-control {
+    background: var(--secondary-bg) !important;
+    border: 2px solid var(--border-color) !important;
+    border-radius: 4px !important;
+    padding: 0.875rem 1.25rem !important;
+    font-size: 1rem !important;
+    transition: all 0.3s ease !important;
+    color: var(--text-primary) !important;
+}
+
+.form-control:focus {
+    border-color: var(--accent-gold) !important;
+    box-shadow: 0 0 0 4px rgba(203, 162, 95, 0.1) !important;
+    outline: none !important;
+    transform: translateY(-1px) !important;
+    background: var(--tertiary-bg) !important;
+}
+
+.form-control::placeholder {
+    color: var(--text-muted) !important;
+}
+
+.form-label {
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+    margin-bottom: 0.75rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    font-size: 0.9rem !important;
+    font-family: 'Cinzel', serif !important;
+}
+
+/* Алерты Jazzmin */
+.alert {
+    border-radius: 4px !important;
+    border: none !important;
+    padding: 1.25rem 1.5rem !important;
+    font-weight: 500 !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #1a3a1a, #2a4a2a) !important;
+    color: #90ee90 !important;
+    border-left: 4px solid #32cd32 !important;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #3a1a1a, #4a2a2a) !important;
+    color: #ff6b6b !important;
+    border-left: 4px solid #dc143c !important;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #3a2a1a, #4a3a2a) !important;
+    color: #ffd700 !important;
+    border-left: 4px solid #ffa500 !important;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #1a2a3a, #2a3a4a) !important;
+    color: #87ceeb !important;
+    border-left: 4px solid #4682b4 !important;
+}
+
+/* Пагинация Jazzmin */
+.pagination {
+    background: var(--secondary-bg) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    box-shadow: var(--shadow-dark) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.page-link {
+    background: var(--secondary-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
+    transition: all 0.3s ease !important;
+    padding: 0.75rem 1rem !important;
+}
+
+.page-link:hover {
+    background: var(--gradient-gold) !important;
+    color: var(--primary-bg) !important;
+    border-color: var(--accent-gold) !important;
+    transform: translateY(-2px) !important;
+}
+
+.page-item.active .page-link {
+    background: var(--gradient-gold) !important;
+    border-color: var(--accent-gold) !important;
+    color: var(--primary-bg) !important;
+    font-weight: 700 !important;
+}
+
+/* Модальные окна Jazzmin */
+.modal-content {
+    background: var(--secondary-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.modal-header {
+    background: var(--gradient-gold) !important;
+    color: var(--primary-bg) !important;
+    border-radius: 8px 8px 0 0 !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    font-family: 'Cinzel', serif !important;
+    font-weight: 700 !important;
+}
+
+.modal-body {
+    background: var(--secondary-bg) !important;
+    color: var(--text-primary) !important;
+    padding: 2rem !important;
+}
+
+.modal-footer {
+    background: var(--tertiary-bg) !important;
+    border-top: 1px solid var(--border-color) !important;
+    padding: 1.5rem 2rem !important;
+}
+
+/* Бейджи Jazzmin */
+.badge {
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    padding: 0.375rem 0.75rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    font-size: 0.8rem !important;
+}
+
+.badge-success {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    color: white !important;
+}
+
+.badge-primary {
+    background: var(--gradient-gold) !important;
+    color: var(--primary-bg) !important;
+}
+
+.badge-warning {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+    color: white !important;
+}
+
+.badge-danger {
+    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+    color: white !important;
+}
+
+.badge-info {
+    background: linear-gradient(135deg, #06b6d4, #0891b2) !important;
+    color: white !important;
+}
+
+/* Фильтры Jazzmin */
+.filter {
+    background: var(--tertiary-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    padding: 1.5rem !important;
+    margin-bottom: 2rem !important;
+    box-shadow: var(--shadow-dark) !important;
+}
+
+.filter h3 {
+    color: var(--accent-gold) !important;
+    font-family: 'Cinzel', serif !important;
+    font-weight: 700 !important;
+    margin-bottom: 1rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Иконки Jazzmin */
+.fas, .far, .fab {
+    margin-right: 0.5rem !important;
+}
+
+.fa-2x {
+    color: var(--accent-gold) !important;
+    font-size: 2em !important;
+}
+
+/* Скроллбар Jazzmin */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--secondary-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-gold);
+}
+
+/* Анимации Jazzmin */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(203, 162, 95, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(203, 162, 95, 0.6);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.glow {
+    animation: glow 2s ease-in-out infinite;
+}
+
+/* Утилиты Jazzmin */
+.text-primary {
+    color: var(--accent-gold) !important;
+}
+
+.text-secondary {
+    color: var(--text-secondary) !important;
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.bg-light {
+    background-color: var(--secondary-bg) !important;
+}
+
+/* Мобильные стили Jazzmin */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1.5rem !important;
+    }
+    
+    .btn {
+        padding: 0.75rem 1.5rem !important;
+        font-size: 0.85rem !important;
+        min-height: 44px !important;
+    }
+    
+    .table-responsive {
+        border-radius: 8px !important;
+        overflow: hidden !important;
+    }
+    
+    .sidebar {
+        padding: 0.5rem !important;
+    }
+    
+    .nav-sidebar > .nav-item > .nav-link {
+        padding: 0.625rem 1rem !important;
+        font-size: 0.85rem !important;
+    }
+}
+
+/* Дополнительные стили для Jazzmin */
+.object-tools {
+    margin-bottom: 1.5rem !important;
+}
+
+.object-tools a {
+    background: var(--gradient-gold) !important;
+    color: var(--primary-bg) !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 4px !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    font-size: 0.9rem !important;
+    transition: all 0.3s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+}
+
+.object-tools a:hover {
+    background: linear-gradient(135deg, #e6c78e, #cba25f) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 0 30px rgba(203, 162, 95, 0.5) !important;
+    color: var(--primary-bg) !important;
+}
+
+/* Стили для форм редактирования Jazzmin */
+.form-row {
+    margin-bottom: 1.5rem !important;
+}
+
+.form-row label {
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+    margin-bottom: 0.75rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    font-size: 0.9rem !important;
+    font-family: 'Cinzel', serif !important;
+}
+
+/* Стили для help-text Jazzmin */
+.help {
+    color: var(--text-muted) !important;
+    font-size: 0.85rem !important;
+    margin-top: 0.5rem !important;
+}
+
+/* Стили для ошибок Jazzmin */
+.errorlist {
+    color: #ff6b6b !important;
+    background: linear-gradient(135deg, #3a1a1a, #4a2a2a) !important;
+    border: 1px solid #dc143c !important;
+    border-radius: 4px !important;
+    padding: 0.75rem 1rem !important;
+    margin-top: 0.5rem !important;
+    list-style: none !important;
+}
+
+/* Стили для успешных сообщений Jazzmin */
+.messagelist {
+    margin-bottom: 1.5rem !important;
+}
+
+.messagelist li {
+    background: linear-gradient(135deg, #1a3a1a, #2a4a2a) !important;
+    color: #90ee90 !important;
+    border: 1px solid #32cd32 !important;
+    border-radius: 4px !important;
+    padding: 1rem 1.5rem !important;
+    margin-bottom: 0.5rem !important;
+    list-style: none !important;
+    font-weight: 500 !important;
+}
+
+/* Стили для breadcrumbs Jazzmin */
+.breadcrumbs {
+    background: var(--tertiary-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 4px !important;
+    padding: 1rem 1.5rem !important;
+    margin-bottom: 2rem !important;
+    color: var(--text-secondary) !important;
+}
+
+.breadcrumbs a {
+    color: var(--accent-gold) !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+}
+
+.breadcrumbs a:hover {
+    color: #e6c78e !important;
+    text-shadow: 0 0 10px rgba(203, 162, 95, 0.5) !important;
+}

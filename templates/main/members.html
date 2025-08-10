@@ -1,0 +1,697 @@
+{% extends 'base.html' %}
+
+{% block title %}Участники клана - Evall Clan{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section members-hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="hero-content">
+                    <div class="hero-badge mb-4">
+                        <span class="badge">
+                            <i class="fas fa-users me-2"></i>БРАТСТВО ВОИНОВ
+                        </span>
+                    </div>
+                    <h1 class="hero-title">
+                        УЧАСТНИКИ КЛАНА
+                    </h1>
+                    <h2 class="hero-subtitle">
+                        Познакомьтесь с нашими легендарными воинами
+                    </h2>
+                    <p class="hero-description">
+                        Каждый участник Evall Clan - это опытный воин, готовый сражаться за славу клана в мире Solisium.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Статистика участников -->
+<section class="stats-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stats-number">{{ clan_stats.total_members }}</div>
+                    <div class="stats-label">Всего воинов</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-circle text-success"></i>
+                    </div>
+                    <div class="stats-number">{{ clan_stats.online_members }}</div>
+                    <div class="stats-label">В бою</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="stats-number">{{ clan_stats.clan_level }}</div>
+                    <div class="stats-label">Уровень клана</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stats-number">50+</div>
+                    <div class="stats-label">Побед</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Фильтры участников -->
+<section class="filters-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="filters-card card">
+                    <div class="card-body">
+                        <div class="filters-header mb-4">
+                            <h3 class="filters-title">
+                                <i class="fas fa-filter me-2"></i>ПОИСК ВОИНОВ
+                            </h3>
+                            <p class="filters-subtitle">Найдите участников по роли, уровню или статусу</p>
+                        </div>
+                        
+                        <div class="row g-4">
+                            <!-- Роли -->
+                            <div class="col-lg-4">
+                                <div class="filter-group">
+                                    <label class="filter-label">
+                                        <i class="fas fa-user-tag me-2"></i>Роль
+                                    </label>
+                                    <div class="role-buttons">
+                                        <a href="{% url 'main:members' %}" class="role-btn {% if not request.GET.role %}active{% endif %}">
+                                            <i class="fas fa-th-large me-1"></i>Все
+                                        </a>
+                                        <a href="?role=leader" class="role-btn {% if request.GET.role == 'leader' %}active{% endif %}">
+                                            <i class="fas fa-crown me-1"></i>Лидер
+                                        </a>
+                                        <a href="?role=officer" class="role-btn {% if request.GET.role == 'officer' %}active{% endif %}">
+                                            <i class="fas fa-chess-king me-1"></i>Офицер
+                                        </a>
+                                        <a href="?role=member" class="role-btn {% if request.GET.role == 'member' %}active{% endif %}">
+                                            <i class="fas fa-shield-alt me-1"></i>Воин
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Статус -->
+                            <div class="col-lg-4">
+                                <div class="filter-group">
+                                    <label class="filter-label">
+                                        <i class="fas fa-signal me-2"></i>Статус
+                                    </label>
+                                    <div class="status-buttons">
+                                        <a href="{% url 'main:members' %}" class="status-btn {% if not request.GET.status %}active{% endif %}">
+                                            <i class="fas fa-th-large me-1"></i>Все
+                                        </a>
+                                        <a href="?status=online" class="status-btn {% if request.GET.status == 'online' %}active{% endif %}">
+                                            <i class="fas fa-circle text-success me-1"></i>Онлайн
+                                        </a>
+                                        <a href="?status=offline" class="status-btn {% if request.GET.status == 'offline' %}active{% endif %}">
+                                            <i class="fas fa-circle text-muted me-1"></i>Оффлайн
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Поиск -->
+                            <div class="col-lg-4">
+                                <div class="filter-group">
+                                    <label class="filter-label">
+                                        <i class="fas fa-search me-2"></i>Поиск
+                                    </label>
+                                    <form method="get" class="search-form">
+                                        <div class="search-input-group">
+                                            <input type="text" name="search" class="search-input" placeholder="Поиск по нику..." value="{{ request.GET.search }}">
+                                            <button type="submit" class="search-btn">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Список участников -->
+<section class="members-section py-5">
+    <div class="container">
+        {% if members %}
+            <div class="members-header mb-5">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 class="members-section-title">
+                            <i class="fas fa-users me-3"></i>
+                            {% if request.GET.role %}
+                                Участники: {{ request.GET.role|title }}
+                            {% elif request.GET.status %}
+                                Участники: {{ request.GET.status|title }}
+                            {% elif request.GET.search %}
+                                Результаты поиска: "{{ request.GET.search }}"
+                            {% else %}
+                                Все участники
+                            {% endif %}
+                        </h2>
+                        <p class="members-section-subtitle">
+                            Сильнейшие воины Evall Clan
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <div class="members-count">
+                            <span class="count-number">{{ members|length }}</span>
+                            <span class="count-label">воинов</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                {% for member in members %}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="member-card card">
+                            <div class="card-body">
+                                <div class="member-header">
+                                    <div class="member-avatar">
+                                        {% if member.user.profile.avatar %}
+                                            <img src="{{ member.user.profile.avatar.url }}" alt="{{ member.user.username }}" class="avatar-img">
+                                        {% else %}
+                                            <div class="avatar-placeholder">
+                                                <i class="fas fa-user-shield"></i>
+                                            </div>
+                                        {% endif %}
+                                        <div class="status-indicator {% if member.is_online %}online{% else %}offline{% endif %}"></div>
+                                    </div>
+                                    <div class="member-info">
+                                        <h4 class="member-name">{{ member.game_nickname|default:member.user.username }}</h4>
+                                        <div class="member-role">
+                                            <span class="role-badge role-{{ member.role }}">
+                                                {% if member.role == 'leader' %}
+                                                    <i class="fas fa-crown me-1"></i>Лидер
+                                                {% elif member.role == 'officer' %}
+                                                    <i class="fas fa-chess-king me-1"></i>Офицер
+                                                {% else %}
+                                                    <i class="fas fa-shield-alt me-1"></i>Воин
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="member-stats">
+                                    <div class="stat-row">
+                                        <div class="stat-item">
+                                            <span class="stat-label">Уровень</span>
+                                            <span class="stat-value">{{ member.level }}</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-label">Опыт</span>
+                                            <span class="stat-value">{{ member.experience }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="member-meta">
+                                    <div class="meta-item">
+                                        <i class="fas fa-user me-1"></i>
+                                        <span>{{ member.user.username }}</span>
+                                    </div>
+                                    {% if member.is_online %}
+                                        <div class="meta-item">
+                                            <i class="fas fa-circle text-success me-1"></i>
+                                            <span>В бою</span>
+                                        </div>
+                                    {% else %}
+                                        <div class="meta-item">
+                                            <i class="fas fa-clock me-1"></i>
+                                            <span>Последний раз: {{ member.last_seen|timesince }} назад</span>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-state-content">
+                    <div class="empty-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="empty-title">
+                        {% if request.GET.search %}
+                            По запросу "{{ request.GET.search }}" ничего не найдено
+                        {% elif request.GET.role %}
+                            В роли "{{ request.GET.role }}" пока нет участников
+                        {% elif request.GET.status %}
+                            В статусе "{{ request.GET.status }}" пока нет участников
+                        {% else %}
+                            Участники скоро появятся
+                        {% endif %}
+                    </h3>
+                    <p class="empty-description">
+                        {% if request.GET.search or request.GET.role or request.GET.status %}
+                            Попробуйте изменить фильтры или просмотрите всех участников.
+                        {% else %}
+                            Следите за обновлениями! Мы будем добавлять новых участников клана.
+                        {% endif %}
+                    </p>
+                    {% if request.GET.search or request.GET.role or request.GET.status %}
+                        <a href="{% url 'main:members' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-users me-2"></i>Все участники
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<style>
+/* Hero Section */
+.members-hero {
+    background: var(--gradient-hero);
+    position: relative;
+    overflow: hidden;
+    min-height: 60vh;
+}
+
+.members-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23cba25f" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
+}
+
+.hero-badge .badge {
+    background: rgba(203, 162, 95, 0.2);
+    color: var(--accent-gold);
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--accent-gold);
+    backdrop-filter: blur(10px);
+}
+
+/* Filters Section */
+.filters-section {
+    background: var(--secondary-bg);
+}
+
+.filters-card {
+    background: var(--tertiary-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-dark);
+}
+
+.filters-title {
+    font-family: 'Cinzel', serif;
+    color: var(--text-primary);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filters-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.filter-group {
+    margin-bottom: 1rem;
+}
+
+.filter-label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.role-buttons, .status-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.role-btn, .status-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background: var(--secondary-bg);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.role-btn:hover, .status-btn:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    transform: translateY(-1px);
+    text-decoration: none;
+    box-shadow: var(--shadow-gold);
+}
+
+.role-btn.active, .status-btn.active {
+    background: var(--accent-gold);
+    border-color: var(--accent-gold);
+    color: var(--primary-bg);
+}
+
+.search-input-group {
+    position: relative;
+    display: flex;
+}
+
+.search-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+}
+
+.search-input:focus {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 3px rgba(203, 162, 95, 0.1);
+    outline: none;
+    background: var(--tertiary-bg);
+}
+
+.search-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--accent-gold);
+    border: none;
+    color: var(--primary-bg);
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+    background: #e6c78e;
+    transform: translateY(-50%) scale(1.05);
+}
+
+/* Members Section */
+.members-section {
+    background: var(--primary-bg);
+}
+
+.members-header {
+    text-align: center;
+}
+
+.members-section-title {
+    font-family: 'Cinzel', serif;
+    color: var(--text-primary);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.members-section-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.members-count {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    background: var(--accent-gold);
+    color: var(--primary-bg);
+    border-radius: 8px;
+    min-width: 100px;
+}
+
+.count-number {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: block;
+}
+
+.count-label {
+    font-size: 0.8rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Member Cards */
+.member-card {
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-dark);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.member-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+}
+
+.member-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.member-avatar {
+    position: relative;
+    margin-right: 1rem;
+}
+
+.avatar-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid var(--accent-gold);
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--tertiary-bg);
+    border: 3px solid var(--accent-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--accent-gold);
+}
+
+.status-indicator {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--secondary-bg);
+}
+
+.status-indicator.online {
+    background: #22c55e;
+}
+
+.status-indicator.offline {
+    background: var(--text-muted);
+}
+
+.member-name {
+    font-family: 'Cinzel', serif;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.role-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.role-leader {
+    background: var(--accent-gold);
+    color: var(--primary-bg);
+}
+
+.role-officer {
+    background: var(--accent-blue);
+    color: var(--primary-bg);
+}
+
+.role-member {
+    background: var(--secondary-bg);
+    color: var(--accent-gold);
+    border: 1px solid var(--accent-gold);
+}
+
+.member-stats {
+    margin-bottom: 1.5rem;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.stat-item {
+    flex: 1;
+    text-align: center;
+    padding: 0.75rem;
+    background: var(--tertiary-bg);
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+.stat-label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    display: block;
+    font-family: 'Cinzel', serif;
+    color: var(--accent-gold);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.member-meta {
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.meta-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.empty-state-content {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+
+.empty-title {
+    font-family: 'Cinzel', serif;
+    color: var(--text-primary);
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.empty-description {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .role-buttons, .status-buttons {
+        justify-content: center;
+    }
+    
+    .member-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .member-avatar {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .stat-row {
+        flex-direction: column;
+    }
+    
+    .members-count {
+        margin-top: 1rem;
+    }
+}
+</style>
+{% endblock %} 

@@ -1,0 +1,665 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Полезные материалы - Evall Clan{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="text-gradient">Полезные материалы</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Программы, моды, гайды и инструменты для улучшения игрового опыта в Throne and Liberty
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Основные категории - видны сразу -->
+<section class="section main-categories-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title text-center mb-5">
+                    <span class="text-gradient">Основные категории</span>
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Софт -->
+            <div class="col-lg-4 col-md-6">
+                <div class="category-card software-card">
+                    <div class="category-icon">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Софт</h3>
+                        <p class="category-description">
+                            Полезные программы для оптимизации игры, моды, патчи и другие инструменты
+                        </p>
+                        <div class="category-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">{{ category_stats.software|default:0 }}</span>
+                                <span class="stat-label">программ</span>
+                            </div>
+                        </div>
+                        <div class="category-actions">
+                            <a href="{% url 'main:useful_materials_by_category' 'software' %}" class="btn btn-primary">
+                                <i class="fas fa-arrow-right me-2"></i>Перейти к софту
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Билдер -->
+            <div class="col-lg-4 col-md-6">
+                <div class="category-card builder-card">
+                    <div class="category-icon">
+                        <i class="fas fa-hammer"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Билдер</h3>
+                        <p class="category-description">
+                            Инструменты для создания персонажей, калькуляторы билдов и гайды по прокачке
+                        </p>
+                        <div class="category-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">{{ category_stats.builder|default:0 }}</span>
+                                <span class="stat-label">инструментов</span>
+                            </div>
+                        </div>
+                        <div class="category-actions">
+                            <a href="{% url 'main:useful_materials_by_category' 'builder' %}" class="btn btn-primary">
+                                <i class="fas fa-arrow-right me-2"></i>Перейти к билдеру
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Аукционный дом -->
+            <div class="col-lg-4 col-md-6">
+                <div class="category-card auction-card">
+                    <div class="category-icon">
+                        <i class="fas fa-gavel"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3 class="category-title">Аукционный дом</h3>
+                        <p class="category-description">
+                            Трейдеры, калькуляторы цен, мониторинг рынка и инструменты для торговли
+                        </p>
+                        <div class="category-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">{{ category_stats.auction|default:0 }}</span>
+                                <span class="stat-label">инструментов</span>
+                            </div>
+                        </div>
+                        <div class="category-actions">
+                            <a href="{% url 'main:useful_materials_by_category' 'auction' %}" class="btn btn-primary">
+                                <i class="fas fa-arrow-right me-2"></i>Перейти к аукциону
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Поиск и фильтры -->
+<section class="section search-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="search-card">
+                    <div class="card-body">
+                        <form method="get" action="{% url 'main:search_useful_materials' %}" class="row g-3">
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                    <input type="text" class="form-control" name="q" placeholder="Поиск материалов..." 
+                                           value="{{ search_query|default:'' }}">
+                                    <button class="btn btn-primary" type="submit">
+                                        Найти
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <select name="category" class="form-control" onchange="this.form.submit()">
+                                    <option value="">Все категории</option>
+                                    {% for code, name in categories %}
+                                        <option value="{{ code }}" {% if current_category == code %}selected{% endif %}>
+                                            {{ name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Список материалов -->
+<section class="section materials-section">
+    <div class="container">
+        {% if search_query %}
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        <i class="fas fa-search me-2"></i>
+                        Результаты поиска для "{{ search_query }}": {{ results_count }} материалов
+                        <a href="{% url 'main:useful_materials_list' %}" class="btn btn-sm btn-outline-primary ms-3">
+                            <i class="fas fa-times me-1"></i>Очистить
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if current_category %}
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="alert alert-primary">
+                        <i class="fas fa-filter me-2"></i>
+                        Категория: {{ current_category|title }}
+                        <a href="{% url 'main:useful_materials_list' %}" class="btn btn-sm btn-outline-primary ms-3">
+                            <i class="fas fa-times me-1"></i>Очистить
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if materials_list %}
+            <div class="row">
+                {% for material in materials_list %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card useful-material-card h-100">
+                            {% if material.image %}
+                                <div class="material-image" style="background-image: url('{{ material.image.url }}');"></div>
+                            {% else %}
+                                <div class="material-image-placeholder">
+                                    <i class="fas fa-tools"></i>
+                                </div>
+                            {% endif %}
+                            
+                            <div class="card-body">
+                                <div class="material-category">
+                                    {{ material.get_category_display }}
+                                </div>
+                                
+                                <h5 class="card-title material-title">
+                                    <a href="{% url 'main:useful_material_detail' material.slug %}">
+                                        {{ material.title }}
+                                    </a>
+                                </h5>
+                                
+                                <p class="card-text material-description">
+                                    {{ material.description|truncatewords:20 }}
+                                </p>
+                                
+                                <div class="material-meta">
+                                    <div class="row">
+                                        {% if material.version %}
+                                            <div class="col-6">
+                                                <small class="text-muted">
+                                                    <i class="fas fa-code-branch me-1"></i>
+                                                    {{ material.version }}
+                                                </small>
+                                            </div>
+                                        {% endif %}
+                                        {% if material.file_size %}
+                                            <div class="col-6">
+                                                <small class="text-muted">
+                                                    <i class="fas fa-hdd me-1"></i>
+                                                    {{ material.file_size }}
+                                                </small>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="row mt-2">
+                                        <div class="col-6">
+                                            <small class="text-muted">
+                                                <i class="fas fa-download me-1"></i>
+                                                {{ material.downloads_count }}
+                                            </small>
+                                        </div>
+                                        <div class="col-6">
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                {{ material.created_at|date:"d.m.Y" }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="material-actions mt-3">
+                                    <a href="{% url 'main:useful_material_detail' material.slug %}" 
+                                       class="btn btn-primary btn-sm">
+                                        <i class="fas fa-eye me-1"></i>Подробнее
+                                    </a>
+                                    
+                                    {% if material.file or material.download_link %}
+                                        <a href="{% if material.file %}{% url 'main:download_material' material.slug %}{% else %}{{ material.download_link }}{% endif %}" 
+                                           class="btn btn-outline-primary btn-sm" 
+                                           target="{% if material.download_link %}_blank{% endif %}">
+                                            <i class="fas fa-download me-1"></i>Скачать
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- Пустое состояние -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h4>Материалы не найдены</h4>
+                        <p>
+                            {% if search_query %}
+                                По вашему запросу "{{ search_query }}" ничего не найдено.
+                            {% elif current_category %}
+                                В категории "{{ current_category|title }}" пока нет материалов.
+                            {% else %}
+                                Пока нет полезных материалов. Загляните позже!
+                            {% endif %}
+                        </p>
+                        <a href="{% url 'main:useful_materials_list' %}" class="btn btn-primary">
+                            <i class="fas fa-home me-2"></i>Вернуться к списку
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<style>
+    /* Стили для основных категорий */
+    .main-categories-section {
+        padding: 4rem 0;
+        background: var(--gradient-dark);
+    }
+
+    .section-title {
+        font-family: 'Cinzel', serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 3rem;
+        text-align: center;
+        color: var(--text-primary);
+    }
+
+    .category-card {
+        background: var(--secondary-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+        box-shadow: var(--shadow-dark);
+    }
+
+    .category-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-gold);
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+    }
+
+    .category-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .category-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        border-color: var(--accent-gold);
+    }
+
+    .software-card {
+        background: linear-gradient(135deg, var(--secondary-bg) 0%, #1a1a24 100%);
+        border-left: 4px solid #667eea;
+    }
+
+    .builder-card {
+        background: linear-gradient(135deg, var(--secondary-bg) 0%, #1a1a24 100%);
+        border-left: 4px solid #f093fb;
+    }
+
+    .auction-card {
+        background: linear-gradient(135deg, var(--secondary-bg) 0%, #1a1a24 100%);
+        border-left: 4px solid #4facfe;
+    }
+
+    .category-icon {
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--accent-gold);
+        transition: all 0.3s ease;
+    }
+
+    .category-card:hover .category-icon {
+        transform: scale(1.1);
+        color: #e6c78e;
+    }
+
+    .category-title {
+        font-family: 'Cinzel', serif;
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+
+    .category-description {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        color: var(--text-secondary);
+    }
+
+    .category-stats {
+        margin-bottom: 2rem;
+    }
+
+    .stat-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stat-number {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--accent-gold);
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .category-actions .btn {
+        background: var(--gradient-gold);
+        border: none;
+        color: var(--primary-bg);
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .category-actions .btn:hover {
+        background: linear-gradient(135deg, #e6c78e, #cba25f);
+        transform: translateY(-2px);
+        box-shadow: 0 0 30px rgba(203, 162, 95, 0.5);
+        color: var(--primary-bg);
+    }
+
+    /* Стили для поиска */
+    .search-section {
+        padding: 2rem 0;
+        background: var(--tertiary-bg);
+    }
+
+    .search-card {
+        background: var(--secondary-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        box-shadow: var(--shadow-dark);
+    }
+
+    .search-card .input-group-text {
+        background: var(--accent-gold);
+        border: none;
+        color: var(--primary-bg);
+    }
+
+    .search-card .form-control {
+        border: 1px solid var(--border-color);
+        background: var(--primary-bg);
+        color: var(--text-primary);
+    }
+
+    .search-card .form-control:focus {
+        border-color: var(--accent-gold);
+        box-shadow: 0 0 0 0.2rem rgba(203, 162, 95, 0.25);
+        background: var(--primary-bg);
+        color: var(--text-primary);
+    }
+
+    .search-card select.form-control {
+        background: var(--primary-bg);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+    }
+
+    .search-card select.form-control:focus {
+        border-color: var(--accent-gold);
+        box-shadow: 0 0 0 0.2rem rgba(203, 162, 95, 0.25);
+    }
+
+    /* Стили для материалов */
+    .materials-section {
+        padding: 3rem 0;
+        background: var(--primary-bg);
+    }
+
+    .useful-material-card {
+        background: var(--secondary-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow-dark);
+        height: 100%;
+        position: relative;
+    }
+
+    .useful-material-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gradient-gold);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .useful-material-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .useful-material-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+        border-color: var(--accent-gold);
+    }
+
+    .material-image {
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .useful-material-card:hover .material-image {
+        transform: scale(1.05);
+    }
+
+    .material-image-placeholder {
+        height: 200px;
+        background: var(--tertiary-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        font-size: 3rem;
+    }
+
+    .material-category {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        background: var(--accent-gold);
+        color: var(--primary-bg);
+        padding: 0.375rem 1rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .material-title {
+        font-family: 'Cinzel', serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        line-height: 1.4;
+    }
+
+    .material-title a {
+        color: var(--text-primary);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .material-title a:hover {
+        color: var(--accent-gold);
+    }
+
+    .material-description {
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+        font-size: 0.95rem;
+    }
+
+    .material-meta {
+        background: var(--tertiary-bg);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .material-actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .material-actions .btn {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    /* Пустое состояние */
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: var(--secondary-bg);
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+    }
+
+    .empty-state h4 {
+        font-family: 'Cinzel', serif;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+
+    .empty-state p {
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+    }
+
+
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+        .section-title {
+            font-size: 2rem;
+        }
+
+        .category-card {
+            padding: 1.5rem;
+        }
+
+        .category-icon {
+            font-size: 3rem;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+        }
+
+        .material-actions {
+            flex-direction: column;
+        }
+        
+        .material-actions .btn {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .main-categories-section {
+            padding: 2rem 0;
+        }
+
+        .category-card {
+            padding: 1rem;
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+        }
+    }
+</style>
+{% endblock %} 

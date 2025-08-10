@@ -1,0 +1,1152 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ news.title }} - Evall Clan{% endblock %}
+
+{% block content %}
+<!-- Hero Section для новости -->
+<section class="news-hero-section" style="min-height: 60vh; background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-10 mx-auto text-center text-white">
+                <div class="news-hero-content">
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb" class="news-breadcrumb mb-4">
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'main:home' %}" class="breadcrumb-link">
+                                    <i class="fas fa-home me-1"></i>Главная
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'main:news_list' %}" class="breadcrumb-link">
+                                    Новости
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <span class="breadcrumb-current">{{ news.title|truncatechars:40 }}</span>
+                            </li>
+                        </ol>
+                    </nav>
+                    
+                    <!-- Категория -->
+                    <div class="news-category-hero mb-4">
+                        <span class="category-badge-hero">
+                            <i class="fas fa-tag me-2"></i>{{ news.get_category_display }}
+                        </span>
+                    </div>
+                    
+                    <!-- Заголовок -->
+                    <h1 class="news-hero-title mb-4">
+                        {{ news.title }}
+                    </h1>
+                    
+                    <!-- Мета информация -->
+                    <div class="news-meta-hero">
+                        <div class="meta-grid">
+                            <div class="meta-item">
+                                <i class="fas fa-calendar-alt meta-icon"></i>
+                                <div class="meta-content">
+                                    <span class="meta-label">Дата публикации</span>
+                                    <span class="meta-value">{{ news.created_at|date:"d.m.Y H:i" }}</span>
+                                </div>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-user meta-icon"></i>
+                                <div class="meta-content">
+                                    <span class="meta-label">Автор</span>
+                                    <span class="meta-value">{{ news.author.username }}</span>
+                                </div>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-clock meta-icon"></i>
+                                <div class="meta-content">
+                                    <span class="meta-label">Время назад</span>
+                                    <span class="meta-value">{{ news.created_at|timesince }} назад</span>
+                                </div>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-eye meta-icon"></i>
+                                <div class="meta-content">
+                                    <span class="meta-label">Просмотры</span>
+                                    <span class="meta-value">1.2k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hero-wave">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="var(--background-light)" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Основная статья -->
+<section class="article-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Изображение новости -->
+                {% if news.image %}
+                    <div class="article-hero-image mb-5">
+                        <div class="image-container">
+                            <img src="{{ news.image.url }}" alt="{{ news.title }}" class="article-image">
+                            <div class="image-overlay">
+                                <div class="image-actions">
+                                    <button class="action-btn" onclick="openImageModal('{{ news.image.url }}')" title="Увеличить">
+                                        <i class="fas fa-expand"></i>
+                                    </button>
+                                    <button class="action-btn" onclick="shareImage()" title="Поделиться">
+                                        <i class="fas fa-share"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <!-- Основная статья -->
+                <article class="article-content">
+                    <div class="article-body">
+                        <!-- Содержание новости -->
+                        <div class="news-text-content">
+                            {{ news.content|linebreaks }}
+                        </div>
+                        
+                        <!-- Теги и действия -->
+                        <div class="article-actions">
+                            <div class="action-row">
+                                <div class="action-group">
+                                    <h6 class="action-title">
+                                        <i class="fas fa-tags me-2"></i>Категория
+                                    </h6>
+                                    <span class="category-tag">
+                                        {{ news.get_category_display }}
+                                    </span>
+                                </div>
+                                
+                                <div class="action-group">
+                                    <h6 class="action-title">
+                                        <i class="fas fa-share-alt me-2"></i>Поделиться
+                                    </h6>
+                                    <div class="social-share-buttons">
+                                        <button class="share-btn discord-btn" onclick="shareToDiscord()" title="Поделиться в Discord">
+                                            <i class="fab fa-discord"></i>
+                                        </button>
+                                        <button class="share-btn telegram-btn" onclick="shareToTelegram()" title="Поделиться в Telegram">
+                                            <i class="fab fa-telegram"></i>
+                                        </button>
+                                        <button class="share-btn copy-btn" onclick="copyLink()" title="Скопировать ссылку">
+                                            <i class="fas fa-link"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Навигация по новостям -->
+                <div class="news-navigation mt-5">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {% if news.get_previous_by_created_at %}
+                                <div class="nav-card prev-card">
+                                    <div class="nav-card-content">
+                                        <div class="nav-label">
+                                            <i class="fas fa-arrow-left me-2"></i>Предыдущая новость
+                                        </div>
+                                        <h6 class="nav-title">
+                                            <a href="{{ news.get_previous_by_created_at.get_absolute_url }}">
+                                                {{ news.get_previous_by_created_at.title|truncatechars:60 }}
+                                            </a>
+                                        </h6>
+                                        <div class="nav-meta">
+                                            <span class="nav-date">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                {{ news.get_previous_by_created_at.created_at|date:"d.m.Y" }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {% if news.get_next_by_created_at %}
+                                <div class="nav-card next-card">
+                                    <div class="nav-card-content text-end">
+                                        <div class="nav-label">
+                                            Следующая новость<i class="fas fa-arrow-right ms-2"></i>
+                                        </div>
+                                        <h6 class="nav-title">
+                                            <a href="{{ news.get_next_by_created_at.get_absolute_url }}">
+                                                {{ news.get_next_by_created_at.title|truncatechars:60 }}
+                                            </a>
+                                        </h6>
+                                        <div class="nav-meta">
+                                            <span class="nav-date">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                {{ news.get_next_by_created_at.created_at|date:"d.m.Y" }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Похожие новости -->
+                <div class="related-news mt-5">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fas fa-newspaper me-3"></i>Похожие новости
+                        </h3>
+                        <p class="section-subtitle">Рекомендуем также прочитать</p>
+                    </div>
+                    
+                    <div class="related-grid">
+                        {% for related_news in related_news_list %}
+                            <div class="related-card">
+                                {% if related_news.image %}
+                                    <div class="related-image">
+                                        <img src="{{ related_news.image.url }}" alt="{{ related_news.title }}">
+                                        <div class="related-category">{{ related_news.get_category_display }}</div>
+                                    </div>
+                                {% endif %}
+                                <div class="related-content">
+                                    <h6 class="related-title">
+                                        <a href="{{ related_news.get_absolute_url }}">
+                                            {{ related_news.title|truncatechars:70 }}
+                                        </a>
+                                    </h6>
+                                    <p class="related-excerpt">
+                                        {{ related_news.content|truncatewords:20 }}
+                                    </p>
+                                    <div class="related-meta">
+                                        <span class="related-date">
+                                            <i class="fas fa-calendar me-1"></i>
+                                            {{ related_news.created_at|date:"d.m.Y" }}
+                                        </span>
+                                        <a href="{{ related_news.get_absolute_url }}" class="read-more-link">
+                                            Читать <i class="fas fa-arrow-right ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="empty-related">
+                                <div class="empty-icon">
+                                    <i class="fas fa-newspaper"></i>
+                                </div>
+                                <h5>Похожих новостей пока нет</h5>
+                                <p>Следите за обновлениями!</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Кнопка возврата -->
+                <div class="back-to-news text-center mt-5">
+                    <a href="{% url 'main:news_list' %}" class="back-btn">
+                        <i class="fas fa-arrow-left me-2"></i>К списку новостей
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Подписка на новости -->
+<section class="newsletter-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="newsletter-card">
+                    <div class="newsletter-content text-center">
+                        <div class="newsletter-icon mb-4">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h3 class="newsletter-title">Не пропустите важные новости!</h3>
+                        <p class="newsletter-description">
+                            Подпишитесь на уведомления о новых статьях и событиях клана. 
+                            Получайте эксклюзивный контент прямо на вашу почту.
+                        </p>
+                        <form class="newsletter-form">
+                            <div class="input-group">
+                                <input type="email" class="form-control newsletter-input" placeholder="Ваш email">
+                                                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-paper-plane me-2"></i>Подписаться
+                                    </button>
+                            </div>
+                            <div class="form-check mt-3">
+                                <input class="form-check-input" type="checkbox" id="newsletterConsent">
+                                <label class="form-check-label" for="newsletterConsent">
+                                    Я согласен получать уведомления о новостях
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Модальное окно для изображения -->
+<div class="image-modal" id="imageModal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeImageModal()">&times;</span>
+        <img id="modalImage" src="" alt="Изображение новости">
+    </div>
+</div>
+
+<style>
+/* Hero Section */
+.news-hero-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.news-hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
+}
+
+.news-hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+/* Breadcrumb */
+.news-breadcrumb {
+    background: transparent;
+    padding: 0;
+}
+
+.breadcrumb-link {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-link:hover {
+    color: white;
+}
+
+.breadcrumb-current {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Category Badge */
+.category-badge-hero {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: var(--radius-lg);
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Hero Title */
+.news-hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+}
+
+/* Meta Grid */
+.news-meta-hero {
+    margin-top: 2rem;
+}
+
+.meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.meta-icon {
+    font-size: 1.5rem;
+    opacity: 0.8;
+}
+
+.meta-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.meta-label {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-bottom: 0.25rem;
+}
+
+.meta-value {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.hero-wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+/* Article Section */
+.article-section {
+    background: var(--background-light);
+}
+
+/* Article Hero Image */
+.article-hero-image {
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.image-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.article-image {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-container:hover .image-overlay {
+    opacity: 1;
+}
+
+.image-container:hover .article-image {
+    transform: scale(1.02);
+}
+
+.image-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.action-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    background: var(--primary-dark);
+    transform: scale(1.1);
+}
+
+/* Article Content */
+.article-content {
+    background: var(--background-light);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+}
+
+.article-body {
+    padding: 3rem;
+}
+
+.news-text-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-primary);
+}
+
+.news-text-content p {
+    margin-bottom: 1.5rem;
+}
+
+.news-text-content h2, .news-text-content h3, .news-text-content h4 {
+    color: var(--text-primary);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.news-text-content h2 {
+    font-size: 1.8rem;
+}
+
+.news-text-content h3 {
+    font-size: 1.5rem;
+}
+
+.news-text-content h4 {
+    font-size: 1.3rem;
+}
+
+.news-text-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+    margin: 1.5rem 0;
+    box-shadow: var(--shadow-md);
+}
+
+.news-text-content blockquote {
+    border-left: 4px solid var(--primary-color);
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: var(--text-secondary);
+    background: var(--background-gray);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.news-text-content ul, .news-text-content ol {
+    margin: 1.5rem 0;
+    padding-left: 2rem;
+}
+
+.news-text-content li {
+    margin-bottom: 0.5rem;
+}
+
+/* Article Actions */
+.article-actions {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.action-group {
+    flex: 1;
+}
+
+.action-title {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.category-tag {
+    display: inline-block;
+    background: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-lg);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.social-share-buttons {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.share-btn {
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.discord-btn {
+    background: #5865F2;
+    color: white;
+}
+
+.discord-btn:hover {
+    background: #4752C4;
+    transform: translateY(-2px);
+}
+
+.telegram-btn {
+    background: #0088cc;
+    color: white;
+}
+
+.telegram-btn:hover {
+    background: #0077b3;
+    transform: translateY(-2px);
+}
+
+.copy-btn {
+    background: var(--text-secondary);
+    color: white;
+}
+
+.copy-btn:hover {
+    background: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+/* Navigation Cards */
+.news-navigation {
+    margin-top: 3rem;
+}
+
+.nav-card {
+    background: var(--background-light);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.nav-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.nav-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+}
+
+.nav-title {
+    margin-bottom: 1rem;
+}
+
+.nav-title a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.nav-title a:hover {
+    color: var(--primary-color);
+}
+
+.nav-meta {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+/* Related News */
+.related-news {
+    margin-top: 4rem;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    color: var(--text-primary);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.related-card {
+    background: var(--background-light);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.related-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.related-image {
+    position: relative;
+    height: 150px;
+    overflow: hidden;
+}
+
+.related-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.related-card:hover .related-image img {
+    transform: scale(1.05);
+}
+
+.related-category {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background: var(--primary-color);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.related-content {
+    padding: 1.5rem;
+}
+
+.related-title {
+    margin-bottom: 1rem;
+}
+
+.related-title a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.related-title a:hover {
+    color: var(--primary-color);
+}
+
+.related-excerpt {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.related-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.related-date {
+    color: var(--text-muted);
+}
+
+.read-more-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.read-more-link:hover {
+    color: var(--primary-dark);
+    transform: translateX(3px);
+}
+
+.empty-related {
+    text-align: center;
+    padding: 3rem 2rem;
+    grid-column: 1 / -1;
+}
+
+.empty-related .empty-icon {
+    font-size: 3rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.empty-related h5 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.empty-related p {
+    color: var(--text-secondary);
+}
+
+/* Back Button */
+.back-to-news {
+    margin-top: 3rem;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    color: white;
+    text-decoration: none;
+}
+
+/* Newsletter Section */
+.newsletter-section {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+}
+
+.newsletter-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-xl);
+    padding: 3rem 2rem;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.newsletter-icon {
+    font-size: 3rem;
+    opacity: 0.9;
+}
+
+.newsletter-title {
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.newsletter-description {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.newsletter-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.newsletter-input {
+    border: none;
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+}
+
+.newsletter-input:focus {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+.newsletter-btn {
+    border-radius: var(--radius-lg);
+    padding: 1rem 2rem;
+    font-weight: 600;
+    border: none;
+    background: white;
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.newsletter-btn:hover {
+    background: var(--background-gray);
+    transform: translateY(-2px);
+    color: var(--primary-color);
+}
+
+.form-check-label {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+}
+
+/* Image Modal */
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+}
+
+.modal-content {
+    position: relative;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    transition: opacity 0.3s ease;
+}
+
+.modal-close:hover {
+    opacity: 0.7;
+}
+
+#modalImage {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: var(--radius-lg);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .news-hero-title {
+        font-size: 2rem;
+    }
+    
+    .meta-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .meta-item {
+        padding: 0.75rem;
+    }
+    
+    .article-body {
+        padding: 2rem 1.5rem;
+    }
+    
+    .action-row {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .related-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .newsletter-card {
+        padding: 2rem 1rem;
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.article-content,
+.nav-card,
+.related-card {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.nav-card:nth-child(1) { animation-delay: 0.1s; }
+.nav-card:nth-child(2) { animation-delay: 0.2s; }
+.related-card:nth-child(1) { animation-delay: 0.3s; }
+.related-card:nth-child(2) { animation-delay: 0.4s; }
+.related-card:nth-child(3) { animation-delay: 0.5s; }
+</style>
+
+<script>
+// Копирование ссылки
+function copyLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        showNotification('Ссылка скопирована!', 'success');
+    }).catch(() => {
+        showNotification('Ошибка при копировании', 'error');
+    });
+}
+
+// Поделиться в Discord
+function shareToDiscord() {
+    const url = encodeURIComponent(window.location.href);
+    const title = encodeURIComponent('{{ news.title }}');
+    const discordUrl = `https://discord.com/api/oauth2/authorize?client_id=YOUR_CLIENT_ID&permissions=0&scope=bot`;
+    window.open(discordUrl, '_blank');
+}
+
+// Поделиться в Telegram
+function shareToTelegram() {
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent('{{ news.title }}');
+    const telegramUrl = `https://t.me/share/url?url=${url}&text=${text}`;
+    window.open(telegramUrl, '_blank');
+}
+
+// Поделиться изображением
+function shareImage() {
+    if (navigator.share) {
+        navigator.share({
+            title: '{{ news.title }}',
+            text: 'Посмотрите на это изображение!',
+            url: window.location.href
+        });
+    } else {
+        copyLink();
+    }
+}
+
+// Модальное окно для изображения
+function openImageModal(imageSrc) {
+    document.getElementById('modalImage').src = imageSrc;
+    document.getElementById('imageModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeImageModal() {
+    document.getElementById('imageModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Закрытие модального окна при клике вне изображения
+document.getElementById('imageModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeImageModal();
+    }
+});
+
+// Закрытие модального окна по Escape
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeImageModal();
+    }
+});
+
+// Уведомления
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#10b981' : '#ef4444'};
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        z-index: 10000;
+        animation: slideInRight 0.3s ease;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+
+// Анимации для уведомлений
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOutRight {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %} 

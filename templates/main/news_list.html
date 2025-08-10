@@ -1,0 +1,1072 @@
+{% extends 'base.html' %}
+
+{% block title %}Новости - Evall Clan{% endblock %}
+
+{% block content %}
+<!-- Hero Section для новостей -->
+<section class="hero-section news-hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="hero-content">
+                    <div class="hero-badge mb-4">
+                        <span class="badge">
+                            <i class="fas fa-scroll me-2"></i>ВЕСТИ СОЛИЗИУМА
+                        </span>
+                    </div>
+                    <h1 class="hero-title">
+                        ПОСЛЕДНИЕ ВЕСТИ
+                    </h1>
+                    <h2 class="hero-subtitle">
+                        Новости из мира Throne and Liberty, события клана и эпические достижения
+                    </h2>
+                    <p class="hero-description">
+                        Будьте в курсе всех событий в мире Solisium и не пропускайте важные обновления
+                    </p>
+                    <div class="hero-stats mt-5">
+                        <div class="row justify-content-center">
+                            <div class="col-md-3 col-6 mb-3">
+                                <div class="stat-item">
+                                    <div class="stat-number">{{ news_list|length }}</div>
+                                    <div class="stat-label">Вестей</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6 mb-3">
+                                <div class="stat-item">
+                                    <div class="stat-number">24/7</div>
+                                    <div class="stat-label">Обновления</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6 mb-3">
+                                <div class="stat-item">
+                                    <div class="stat-number">100%</div>
+                                    <div class="stat-label">Качество</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6 mb-3">
+                                <div class="stat-item">
+                                    <div class="stat-number">∞</div>
+                                    <div class="stat-label">Возможностей</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Умные фильтры -->
+<section class="filters-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="filters-card card">
+                    <div class="card-body">
+                        <div class="filters-header mb-4">
+                            <h3 class="filters-title">
+                                <i class="fas fa-compass me-2"></i>ПОИСК ВЕСТЕЙ
+                            </h3>
+                            <p class="filters-subtitle">Найдите именно то, что вас интересует в мире Solisium</p>
+                        </div>
+                        
+                        <div class="row g-4">
+                            <!-- Категории -->
+                            <div class="col-lg-6">
+                                <div class="filter-group">
+                                    <label class="filter-label">
+                                        <i class="fas fa-tags me-2"></i>Категории
+                                    </label>
+                                    <div class="category-buttons">
+                                        <a href="{% url 'main:news_list' %}" class="category-btn {% if not request.GET.category %}active{% endif %}">
+                                            <i class="fas fa-th-large me-1"></i>Все
+                                        </a>
+                                        <a href="?category=game" class="category-btn {% if request.GET.category == 'game' %}active{% endif %}">
+                                            <i class="fas fa-gamepad me-1"></i>Игра
+                                        </a>
+                                        <a href="?category=clan" class="category-btn {% if request.GET.category == 'clan' %}active{% endif %}">
+                                            <i class="fas fa-crown me-1"></i>Клан
+                                        </a>
+                                        <a href="?category=events" class="category-btn {% if request.GET.category == 'events' %}active{% endif %}">
+                                            <i class="fas fa-calendar-alt me-1"></i>События
+                                        </a>
+                                        <a href="?category=updates" class="category-btn {% if request.GET.category == 'updates' %}active{% endif %}">
+                                            <i class="fas fa-download me-1"></i>Обновления
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Поиск -->
+                            <div class="col-lg-6">
+                                <div class="filter-group">
+                                    <label class="filter-label">
+                                        <i class="fas fa-search me-2"></i>Поиск
+                                    </label>
+                                    <form method="get" class="search-form">
+                                        <div class="search-input-group">
+                                            <input type="text" name="search" class="search-input" placeholder="Поиск по вестям..." value="{{ request.GET.search }}">
+                                            <button type="submit" class="search-btn">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Список новостей -->
+<section class="news-section py-5">
+    <div class="container">
+        {% if news_list %}
+            <div class="news-header mb-5">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 class="news-section-title">
+                            <i class="fas fa-scroll me-3"></i>
+                            {% if request.GET.category %}
+                                Вести: {{ request.GET.category|title }}
+                            {% elif request.GET.search %}
+                                Результаты поиска: "{{ request.GET.search }}"
+                            {% else %}
+                                Все вести
+                            {% endif %}
+                        </h2>
+                        <p class="news-section-subtitle">
+                            Откройте для себя последние события и обновления мира Solisium
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <div class="news-count">
+                            <span class="count-number">{{ news_list|length }}</span>
+                            <span class="count-label">вестей</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                {% for news in news_list %}
+                    <div class="col-lg-4 col-md-6">
+                        <article class="news-card card">
+                            <div class="news-card-image">
+                                {% if news.image %}
+                                    <img src="{{ news.image.url }}" alt="{{ news.title }}" class="news-image">
+                                {% else %}
+                                    <div class="news-placeholder">
+                                        <i class="fas fa-scroll"></i>
+                                    </div>
+                                {% endif %}
+                                <div class="news-category-badge">
+                                    <span class="category-text">{{ news.get_category_display }}</span>
+                                </div>
+                                <div class="news-overlay">
+                                    <a href="{{ news.get_absolute_url }}" class="read-more-btn">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="news-card-content">
+                                <div class="news-meta">
+                                    <span class="news-date">
+                                        <i class="fas fa-calendar me-1"></i>
+                                        {{ news.created_at|date:"d.m.Y" }}
+                                    </span>
+                                    <span class="news-author">
+                                        <i class="fas fa-user me-1"></i>
+                                        {{ news.author.username }}
+                                    </span>
+                                </div>
+                                
+                                <h3 class="news-title">
+                                    <a href="{{ news.get_absolute_url }}">{{ news.title }}</a>
+                                </h3>
+                                
+                                <p class="news-excerpt">
+                                    {{ news.content|truncatewords:25 }}
+                                </p>
+                                
+                                <div class="news-footer">
+                                    <a href="{{ news.get_absolute_url }}" class="read-full-btn">
+                                        Читать полностью
+                                        <i class="fas fa-arrow-right ms-2"></i>
+                                    </a>
+                                    <div class="news-stats">
+                                        <span class="stat-item">
+                                            <i class="fas fa-eye me-1"></i>
+                                            <span class="stat-value">1.2k</span>
+                                        </span>
+                                        <span class="stat-item">
+                                            <i class="fas fa-heart me-1"></i>
+                                            <span class="stat-value">45</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Улучшенная пагинация -->
+            {% if is_paginated %}
+                <div class="pagination-section mt-5">
+                    <nav aria-label="Навигация по страницам" class="pagination-nav">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link pagination-btn" href="?page=1{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">
+                                        <i class="fas fa-angle-double-left"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link pagination-btn" href="?page={{ page_obj.previous_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">
+                                        <i class="fas fa-angle-left"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <li class="page-item active">
+                                        <span class="page-link pagination-btn active">{{ num }}</span>
+                                    </li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a class="page-link pagination-btn" href="?page={{ num }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link pagination-btn" href="?page={{ page_obj.next_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">
+                                        <i class="fas fa-angle-right"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link pagination-btn" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">
+                                        <i class="fas fa-angle-double-right"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-state-content">
+                    <div class="empty-icon">
+                        <i class="fas fa-scroll"></i>
+                    </div>
+                    <h3 class="empty-title">
+                        {% if request.GET.search %}
+                            По запросу "{{ request.GET.search }}" ничего не найдено
+                        {% elif request.GET.category %}
+                            В категории "{{ request.GET.category }}" пока нет вестей
+                        {% else %}
+                            Вести скоро появятся
+                        {% endif %}
+                    </h3>
+                    <p class="empty-description">
+                        {% if request.GET.search %}
+                            Попробуйте изменить поисковый запрос или просмотрите все вести.
+                        {% elif request.GET.category %}
+                            Следите за обновлениями в этой категории!
+                        {% else %}
+                            Следите за обновлениями! Мы будем публиковать вести о событиях клана, обновлениях игры и многом другом.
+                        {% endif %}
+                    </p>
+                    {% if request.GET.search or request.GET.category %}
+                        <a href="{% url 'main:news_list' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-scroll me-2"></i>Все вести
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Подписка на новости -->
+<section class="newsletter-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="newsletter-card card">
+                    <div class="card-body">
+                        <div class="newsletter-content text-center">
+                            <div class="newsletter-icon mb-4">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <h3 class="newsletter-title">Не пропустите важные вести!</h3>
+                            <p class="newsletter-description">
+                                Подпишитесь на уведомления о новых статьях и событиях клана. 
+                                Получайте эксклюзивный контент прямо на вашу почту.
+                            </p>
+                            <form class="newsletter-form">
+                                <div class="input-group">
+                                    <input type="email" class="form-control newsletter-input" placeholder="Ваш email">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-paper-plane me-2"></i>Подписаться
+                                    </button>
+                                </div>
+                                <div class="form-check mt-3">
+                                    <input class="form-check-input" type="checkbox" id="newsletterConsent">
+                                    <label class="form-check-label" for="newsletterConsent">
+                                        Я согласен получать уведомления о вестях
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Hero Section */
+.news-hero {
+    background: var(--gradient-hero);
+    position: relative;
+    overflow: hidden;
+    min-height: 70vh;
+}
+
+.news-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23cba25f" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
+}
+
+.hero-badge .badge {
+    background: rgba(203, 162, 95, 0.2);
+    color: var(--accent-gold);
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--accent-gold);
+    backdrop-filter: blur(10px);
+}
+
+.hero-stats .stat-item {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(203, 162, 95, 0.1);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(203, 162, 95, 0.2);
+}
+
+.stat-number {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--accent-gold);
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Filters Section */
+.filters-section {
+    background: var(--secondary-bg);
+}
+
+.filters-card {
+    background: var(--tertiary-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-dark);
+}
+
+.filters-title {
+    font-family: 'Cinzel', serif;
+    color: var(--text-primary);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filters-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.filter-group {
+    margin-bottom: 1rem;
+}
+
+.filter-label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.category-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.category-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background: var(--secondary-bg);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.category-btn:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    transform: translateY(-1px);
+    text-decoration: none;
+    box-shadow: var(--shadow-gold);
+}
+
+.category-btn.active {
+    background: var(--accent-gold);
+    border-color: var(--accent-gold);
+    color: var(--primary-bg);
+}
+
+.search-input-group {
+    position: relative;
+    display: flex;
+}
+
+.search-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+}
+
+.search-input:focus {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 3px rgba(203, 162, 95, 0.1);
+    outline: none;
+    background: var(--tertiary-bg);
+}
+
+.search-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--accent-gold);
+    border: none;
+    color: var(--primary-bg);
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+    background: #e6c78e;
+    transform: translateY(-50%) scale(1.05);
+}
+
+/* News Section */
+.news-section {
+    background: var(--primary-bg);
+}
+
+.news-header {
+    text-align: center;
+}
+
+.news-section-title {
+    font-family: 'Cinzel', serif;
+    color: var(--text-primary);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.news-section-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.news-count {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    background: var(--accent-gold);
+    color: var(--primary-bg);
+    border-radius: 8px;
+    min-width: 100px;
+}
+
+.count-number {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: block;
+}
+
+.count-label {
+    font-size: 0.8rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* News Cards */
+.news-card {
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-dark);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.news-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+}
+
+.news-card-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.news-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.news-card:hover .news-image {
+    transform: scale(1.05);
+}
+
+.news-placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-bg);
+    font-size: 3rem;
+    opacity: 0.7;
+}
+
+.news-category-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 2;
+}
+
+.category-text {
+    background: var(--accent-gold);
+    color: var(--primary-bg);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.news-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.news-card:hover .news-overlay {
+    opacity: 1;
+}
+
+.read-more-btn {
+    background: var(--accent-gold);
+    color: var(--primary-bg);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.read-more-btn:hover {
+    background: #e6c78e;
+    transform: scale(1.1);
+    color: var(--primary-bg);
+}
+
+.news-card-content {
+    padding: 1.5rem;
+}
+
+/* Улучшенные отступы для карточек новостей */
+.news-card-content .btn {
+    margin-top: 1rem;
+}
+
+.news-card-content .btn:first-child {
+    margin-top: 0;
+}
+
+.news-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.news-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.news-title a {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.news-title a:hover {
+    color: var(--accent-gold);
+}
+
+.news-excerpt {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.news-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.read-full-btn {
+    color: var(--accent-gold);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.read-full-btn:hover {
+    color: #e6c78e;
+    transform: translateX(5px);
+}
+
+.news-stats {
+    display: flex;
+    gap: 1rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.stat-value {
+    margin-left: 0.25rem;
+    font-weight: 500;
+}
+
+/* Pagination */
+.pagination-section {
+    margin-top: 3rem;
+}
+
+.pagination-nav {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    gap: 0.5rem;
+}
+
+.pagination-btn {
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background: var(--secondary-bg);
+}
+
+.pagination-btn:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-gold);
+}
+
+.pagination-btn.active {
+    background: var(--accent-gold);
+    border-color: var(--accent-gold);
+    color: var(--primary-bg);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.empty-state-content {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+
+.empty-title {
+    font-family: 'Cinzel', serif;
+    color: var(--text-primary);
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.empty-description {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+/* Newsletter Section */
+.newsletter-section {
+    background: var(--gradient-gold);
+    color: var(--primary-bg);
+}
+
+.newsletter-card {
+    background: rgba(11, 11, 15, 0.1);
+    border: 1px solid rgba(11, 11, 15, 0.2);
+    backdrop-filter: blur(20px);
+}
+
+.newsletter-icon {
+    font-size: 3rem;
+    opacity: 0.9;
+    color: var(--primary-bg);
+}
+
+.newsletter-title {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.newsletter-description {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.newsletter-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.newsletter-input {
+    border: none;
+    border-radius: 4px;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.newsletter-input:focus {
+    box-shadow: 0 0 0 3px rgba(11, 11, 15, 0.2);
+    background: white;
+}
+
+.newsletter-btn {
+    border-radius: 4px;
+    padding: 1rem 2rem;
+    font-weight: 600;
+    border: none;
+    background: var(--primary-bg);
+    color: var(--accent-gold);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.newsletter-btn:hover {
+    background: var(--secondary-bg);
+    transform: translateY(-2px);
+    color: var(--accent-gold);
+}
+
+.form-check-label {
+    color: rgba(11, 11, 15, 0.9);
+    font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .hero-description {
+        font-size: 1rem;
+    }
+    
+    .hero-stats .stat-item {
+        padding: 0.75rem;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+    }
+    
+    .filters-card {
+        padding: 1.5rem;
+    }
+    
+    .category-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .category-btn {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .search-input-group {
+        flex-direction: column;
+    }
+    
+    .search-input {
+        margin-bottom: 0.5rem;
+        border-radius: 6px;
+    }
+    
+    .search-btn {
+        position: static;
+        transform: none;
+        border-radius: 6px;
+        width: 100%;
+        padding: 0.75rem;
+    }
+    
+    .news-card-content {
+        padding: 1rem;
+    }
+    
+    .news-title {
+        font-size: 1.1rem;
+    }
+    
+    .news-excerpt {
+        font-size: 0.85rem;
+    }
+    
+    .news-footer {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .news-stats {
+        justify-content: flex-start;
+    }
+    
+    .newsletter-card {
+        padding: 2rem 1rem;
+    }
+    
+    .newsletter-form .input-group {
+        flex-direction: column;
+    }
+    
+    .newsletter-input {
+        margin-bottom: 0.5rem;
+        border-radius: 6px;
+    }
+    
+    .newsletter-form .btn {
+        width: 100%;
+        border-radius: 6px;
+    }
+    
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.25rem;
+    }
+    
+    .pagination-btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
+    
+    .news-header {
+        text-align: left;
+    }
+    
+    .news-count {
+        margin-top: 1rem;
+        align-self: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .stat-number {
+        font-size: 1.25rem;
+    }
+    
+    .category-btn {
+        font-size: 0.75rem;
+        padding: 0.375rem 0.625rem;
+    }
+    
+    .news-card-image {
+        height: 180px;
+    }
+    
+    .news-title {
+        font-size: 1rem;
+    }
+    
+    .news-excerpt {
+        font-size: 0.8rem;
+    }
+    
+    .news-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .empty-icon {
+        font-size: 3rem;
+    }
+    
+    .empty-title {
+        font-size: 1.5rem;
+    }
+    
+    .empty-description {
+        font-size: 1rem;
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.news-card {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.news-card:nth-child(1) { animation-delay: 0.1s; }
+.news-card:nth-child(2) { animation-delay: 0.2s; }
+.news-card:nth-child(3) { animation-delay: 0.3s; }
+.news-card:nth-child(4) { animation-delay: 0.4s; }
+.news-card:nth-child(5) { animation-delay: 0.5s; }
+.news-card:nth-child(6) { animation-delay: 0.6s; }
+</style>
+{% endblock %} 

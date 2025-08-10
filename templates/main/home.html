@@ -1,0 +1,624 @@
+{% extends 'base.html' %}
+
+{% block title %}Evall Clan - Главная{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="text-gradient">Evall Clan</span>
+                    </h1>
+                    <h2 class="hero-subtitle">Ведущий клан в игре Throne and Liberty</h2>
+                    <p class="hero-description">
+                        Добро пожаловать в мир новостей, обновлений и событий клана Evall! Будьте в курсе всех последних событий и присоединяйтесь к нашему сообществу.
+                    </p>
+                    <div class="hero-buttons">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'main:join_clan' %}" class="btn btn-primary btn-lg w-100 mb-2">
+                                <i class="fas fa-shield-alt me-2"></i>Вступить в клан
+                            </a>
+                        {% else %}
+                            <a href="{% url 'auth:login' %}" class="btn btn-primary btn-lg w-100 mb-2">
+                                <i class="fas fa-sign-in-alt me-2"></i>Войти
+                            </a>
+                            <a href="{% url 'main:join_clan' %}" class="btn btn-outline-primary btn-lg w-100">
+                                <i class="fas fa-shield-alt me-2"></i>Вступить в клан
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-visual">
+                    <div class="hero-illustration">
+                        <div class="hero-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="floating-elements">
+                            <div class="floating-element">
+                                <i class="fas fa-newspaper"></i>
+                            </div>
+                            <div class="floating-element">
+                                <i class="fas fa-gamepad"></i>
+                            </div>
+                            <div class="floating-element">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Последние новости -->
+<section class="news-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title">Последние новости</h2>
+                <p class="section-subtitle">Будьте в курсе всех событий клана и игры Throne and Liberty</p>
+            </div>
+        </div>
+        
+        {% if latest_news %}
+            <div class="row">
+                {% for news in latest_news %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="news-card">
+                            {% if news.image %}
+                                <div class="news-image" style="background-image: url('{{ news.image.url }}');">
+                                    <div class="news-category">{{ news.get_category_display }}</div>
+                                </div>
+                            {% else %}
+                                <div class="news-image">
+                                    <div class="news-category">{{ news.get_category_display }}</div>
+                                    <div class="news-placeholder">
+                                        <i class="fas fa-newspaper"></i>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="news-content">
+                                <h4 class="news-title">{{ news.title }}</h4>
+                                <p class="news-excerpt">
+                                    {{ news.content|truncatewords:25 }}
+                                </p>
+                                <div class="news-meta">
+                                    <span class="news-date">
+                                        <i class="fas fa-calendar me-1"></i>
+                                        {{ news.created_at|date:"d.m.Y" }}
+                                    </span>
+                                    <a href="{{ news.get_absolute_url }}" class="btn btn-sm btn-outline-primary">
+                                        Читать
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <a href="{% url 'main:news_list' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-newspaper me-2"></i>Все новости
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <h4>Новости скоро появятся</h4>
+                        <p>Следите за обновлениями! Мы будем публиковать новости о событиях клана, обновлениях игры и многом другом.</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Статистика клана -->
+<section class="stats-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title">Статистика клана</h2>
+                <p class="section-subtitle">Наши достижения и активность в игре</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stats-number">{{ clan_stats.total_members }}</div>
+                    <div class="stats-label">Участников клана</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-circle text-success"></i>
+                    </div>
+                    <div class="stats-number">{{ clan_stats.online_members }}</div>
+                    <div class="stats-label">Онлайн сейчас</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stats-number">{{ clan_stats.clan_level }}</div>
+                    <div class="stats-label">Уровень клана</div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stats-number">15+</div>
+                    <div class="stats-label">Побед в PvP</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Категории новостей -->
+<section class="features-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title">Категории новостей</h2>
+                <p class="section-subtitle">Найдите интересующую вас информацию</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h5 class="card-title">Игра</h5>
+                        <p class="card-text">Новости об обновлениях Throne and Liberty, изменениях в геймплее и технических аспектах игры.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <h5 class="card-title">Клан</h5>
+                        <p class="card-text">Внутренние новости клана, достижения участников, изменения в структуре и правилах.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h5 class="card-title">События</h5>
+                        <p class="card-text">Анонсы предстоящих событий, турниров, рейдов и других активностей клана.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <h5 class="card-title">Обновления</h5>
+                        <p class="card-text">Информация о патчах, новых функциях, исправлениях багов и других обновлениях.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- О клане -->
+<section id="about" class="about-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="section-title">О нашем клане</h2>
+                <p class="section-subtitle">
+                    Evall - это не просто клан, это семья единомышленников, стремящихся к величию в мире Throne and Liberty.
+                </p>
+                <div class="features-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>Опытные игроки</h5>
+                            <p>Наставники и опытные игроки готовы помочь новичкам освоить игру</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>Регулярные события</h5>
+                            <p>Рейды, PvP турниры, гильдейские войны и другие активности</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>Дружелюбное сообщество</h5>
+                            <p>Поддержка и взаимопомощь между всеми участниками клана</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h5>Актуальные новости</h5>
+                            <p>Быстрые обновления о событиях в игре и клане</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="about-visual">
+                    <div class="about-illustration">
+                        <div class="about-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Призыв к действию -->
+<section class="cta-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <div class="cta-content">
+                    <h2>Готов стать легендой?</h2>
+                    <p>Присоединяйтесь к Evall Clan и станьте частью величайшего сообщества в Throne and Liberty! Следите за новостями и будьте в курсе всех событий.</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'main:join_clan' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-shield-alt me-2"></i>Вступить в клан
+                        </a>
+                    {% else %}
+                        <div class="cta-buttons">
+                            <a href="{% url 'auth:login' %}" class="btn btn-primary btn-lg w-100 mb-2">
+                                <i class="fas fa-sign-in-alt me-2"></i>Войти
+                            </a>
+                            <a href="{% url 'main:join_clan' %}" class="btn btn-outline-primary btn-lg w-100">
+                                <i class="fas fa-shield-alt me-2"></i>Вступить в клан
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .hero-description {
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+
+    .hero-visual {
+        position: relative;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hero-illustration {
+        position: relative;
+        width: 300px;
+        height: 300px;
+    }
+
+    .hero-icon {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-xl);
+        position: relative;
+        z-index: 1;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .hero-icon i {
+        font-size: 4rem;
+        color: white;
+    }
+
+    .floating-elements {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .floating-element {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        background: var(--background-light);
+        border: 2px solid var(--primary-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        box-shadow: var(--shadow-md);
+        animation: float 4s ease-in-out infinite;
+    }
+
+    .floating-element:nth-child(1) {
+        top: 10%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    .floating-element:nth-child(2) {
+        top: 60%;
+        right: 10%;
+        animation-delay: 1.5s;
+    }
+
+    .floating-element:nth-child(3) {
+        bottom: 10%;
+        left: 50%;
+        animation-delay: 3s;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    .about-section {
+        background: var(--background-gray);
+    }
+
+    .about-visual {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .about-illustration {
+        position: relative;
+        width: 250px;
+        height: 250px;
+    }
+
+    .about-icon {
+        width: 100%;
+        height: 100%;
+        background: var(--background-light);
+        border: 3px solid var(--primary-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-md);
+        animation: pulse 2s infinite;
+    }
+
+    .about-icon i {
+        font-size: 3rem;
+        color: var(--primary-color);
+    }
+
+    .features-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem;
+        background: var(--background-light);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+    }
+
+    .feature-item:hover {
+        transform: translateX(5px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .feature-item .feature-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--primary-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+    .feature-content h5 {
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    .feature-content p {
+        color: var(--text-secondary);
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        color: white;
+        font-size: 1.5rem;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+    
+    /* Мобильные улучшения для hero секции */
+    @media (max-width: 768px) {
+        .hero-buttons {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .hero-buttons .btn {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .hero-visual {
+            height: 300px;
+            margin-top: 2rem;
+        }
+        
+        .hero-illustration {
+            width: 250px;
+            height: 250px;
+        }
+        
+        .hero-icon {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .hero-icon i {
+            font-size: 3rem;
+        }
+        
+        .floating-element {
+            width: 50px;
+            height: 50px;
+            font-size: 1.25rem;
+        }
+        
+        .cta-buttons {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .cta-buttons .btn {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .features-list {
+            gap: 1rem;
+        }
+        
+        .feature-item {
+            padding: 0.75rem;
+        }
+        
+        .feature-item .feature-icon {
+            width: 35px;
+            height: 35px;
+            font-size: 0.9rem;
+        }
+        
+        .about-visual {
+            margin-top: 2rem;
+        }
+        
+        .about-illustration {
+            width: 200px;
+            height: 200px;
+        }
+        
+        .about-icon i {
+            font-size: 2.5rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .hero-visual {
+            height: 250px;
+        }
+        
+        .hero-illustration {
+            width: 200px;
+            height: 200px;
+        }
+        
+        .hero-icon i {
+            font-size: 2.5rem;
+        }
+        
+        .floating-element {
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+        }
+        
+        .about-illustration {
+            width: 150px;
+            height: 150px;
+        }
+        
+        .about-icon i {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %} 

@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block title %}Вступить в клан - Evall Clan{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section join-hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <div class="hero-content">
+                    <div class="hero-badge mb-4">
+                        <span class="badge">
+                            <i class="fas fa-shield-alt me-2"></i>ПРИСОЕДИНИТЬСЯ К EVALL
+                        </span>
+                    </div>
+                    <h1 class="hero-title">СТАНЬ ЧАСТЬЮ КЛАНА</h1>
+                    <h2 class="hero-subtitle">Подай заявку и вступи в братство Evall в мире Throne and Liberty</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="join-wave"></div>
+    <style>
+        .join-hero { position: relative; overflow: hidden; min-height: 50vh; background: var(--gradient-hero); }
+        .join-hero::before { content:''; position:absolute; inset:0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23cba25f" opacity="0.08"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>'); opacity:.35; }
+        .join-wave { position:absolute; bottom:0; left:0; right:0; height:4px; background: var(--gradient-gold); box-shadow: 0 0 20px rgba(203,162,95,.4); }
+        .hero-badge .badge { background: rgba(203,162,95,.18); color: var(--accent-gold); padding: .75rem 1.5rem; border:1px solid var(--accent-gold); border-radius: 4px; backdrop-filter: blur(10px); }
+    </style>
+</section>
+
+<!-- Форма заявки -->
+<section class="section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card auth-card fantasy-border">
+                    <div class="card-header">
+                        <h2 class="mb-0"><i class="fas fa-scroll me-2"></i>Заявка на вступление</h2>
+                    </div>
+                    <div class="card-body p-4 p-md-5">
+                        {% if user.is_authenticated %}
+                            {% if user.clanmember_set.exists %}
+                                {% with clan_member=user.clanmember_set.first %}
+                                    {% if clan_member.is_approved %}
+                                        <div class="text-center">
+                                            <div class="stats-icon mb-3"><i class="fas fa-check-circle text-success"></i></div>
+                                            <h4 class="mb-3">Вы являетесь членом клана!</h4>
+                                            <p class="text-muted mb-4">
+                                                Ваша роль: <strong>{{ clan_member.get_role_display }}</strong><br>
+                                                Дата вступления: {{ clan_member.join_date|date:"d.m.Y" }}<br>
+                                                {% if clan_member.is_online %}
+                                                    <span class="badge bg-success">Онлайн</span>
+                                                {% else %}
+                                                    <span class="badge bg-secondary">Оффлайн</span>
+                                                {% endif %}
+                                            </p>
+                                            <a href="{% url 'main:home' %}" class="btn btn-primary btn-lg">
+                                                <i class="fas fa-home me-2"></i>Вернуться на главную
+                                            </a>
+                                        </div>
+                                    {% else %}
+                                        <div class="text-center">
+                                            <div class="stats-icon mb-3"><i class="fas fa-clock text-warning"></i></div>
+                                            <h4 class="mb-3">Ваша заявка на рассмотрении</h4>
+                                            <p class="text-muted mb-4">
+                                                Заявка подана: {{ clan_member.join_date|date:"d.m.Y H:i" }}<br>
+                                                Статус: <span class="badge bg-warning">Ожидает одобрения</span>
+                                            </p>
+                                            <p class="text-muted">Мы рассмотрим вашу заявку в течение 24-48 часов и свяжемся с вами по email.</p>
+                                            <a href="{% url 'main:home' %}" class="btn btn-primary btn-lg">
+                                                <i class="fas fa-home me-2"></i>Вернуться на главную
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
+                            {% else %}
+                                <div class="text-center mb-4">
+                                    <p class="lead">Добро пожаловать, <strong>{{ user.username }}</strong>! Подайте заявку на вступление в клан Evall.</p>
+                                </div>
+                                <form method="post" class="auth-form">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="game_nickname" class="form-label"><i class="fas fa-gamepad"></i> Игровой никнейм</label>
+                                        <input type="text" class="form-control" id="game_nickname" name="game_nickname" placeholder="Введите ваш никнейм в игре" required>
+                                        <div class="form-text text-muted">Ник, под которым вас знают в Throne and Liberty</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label text-muted">Имя пользователя</label>
+                                                <input type="text" class="form-control" value="{{ user.username }}" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label text-muted">Email</label>
+                                                <input type="email" class="form-control" value="{{ user.email }}" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="card bg-light">
+                                            <div class="card-body">
+                                                <h5 class="text-primary mb-3"><i class="fas fa-list-check me-2"></i>Требования к кандидатам</h5>
+                                                <ul class="text-muted mb-0">
+                                                    <li>Возраст от 18 лет</li>
+                                                    <li>Активность в игре минимум 3 раза в неделю</li>
+                                                    <li>Готовность участвовать в клановых событиях</li>
+                                                    <li>Уважительное отношение к другим игрокам</li>
+                                                    <li>Желание развиваться и помогать клану</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-paper-plane me-2"></i>Отправить заявку</button>
+                                    </div>
+                                </form>
+                            {% endif %}
+                        {% else %}
+                            <div class="text-center">
+                                <div class="stats-icon mb-3"><i class="fas fa-lock"></i></div>
+                                <h4 class="mb-3">Требуется авторизация</h4>
+                                <p class="text-muted mb-4">Для подачи заявки на вступление в клан необходимо войти в систему.</p>
+                                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                                    <a href="{% url 'auth:login' %}" class="btn btn-primary btn-lg"><i class="fas fa-sign-in-alt me-2"></i>Войти</a>
+                                    <a href="{% url 'auth:register' %}" class="btn btn-outline-primary btn-lg"><i class="fas fa-user-plus me-2"></i>Регистрация</a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Дополнительная информация -->
+        <div class="row mt-5">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="stats-icon mb-3"><i class="fas fa-clock"></i></div>
+                        <h5>Время рассмотрения</h5>
+                        <p class="text-muted mb-0">Заявки рассматриваются в течение 24-48 часов. Мы свяжемся с вами по email.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="stats-icon mb-3"><i class="fas fa-users"></i></div>
+                        <h5>Что дальше?</h5>
+                        <p class="text-muted mb-0">После одобрения заявки вы получите доступ к закрытым разделам сайта и сможете участвовать в клановых событиях.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .auth-card .card-header { background: var(--tertiary-bg); border-bottom: 1px solid var(--border-color); }
+        .auth-card .card-header h2 { font-family: 'Cinzel', serif; font-weight: 700; margin: 0; }
+        .stats-icon i { font-size: 2rem; color: var(--accent-gold); }
+    </style>
+</section>
+{% endblock %}
