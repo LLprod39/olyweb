@@ -1,0 +1,444 @@
+:root {
+    /* Цветовая палитра Throne and Liberty */
+    --primary-bg: #0b0b0f;
+    --secondary-bg: #1e1e26;
+    --tertiary-bg: #15151c;
+
+    /* Акценты */
+    --accent-gold: #cba25f;
+    --accent-blue: #3b8dff;
+    --accent-red: #d54c4c;
+
+    /* Текст */
+    --text-primary: #e5e5e5;
+    --text-secondary: #a0a0a0;
+    --text-muted: #808080;
+
+    /* Бордеры/тени */
+    --border-color: #2a2a35;
+    --shadow-dark: 0 4px 20px rgba(0, 0, 0, 0.6);
+    --shadow-gold: 0 0 20px rgba(203, 162, 95, 0.3);
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);
+    --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.75);
+    --shadow-xl: 0 18px 60px rgba(0, 0, 0, 0.85);
+
+    /* Радиусы */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+
+    /* Служебные цвета для совместимости с шаблонами */
+    --primary-color: var(--accent-gold);
+    --primary-dark: #a8844a;
+    --accent-color: var(--accent-blue);
+    --background-light: #12121a;
+    --background-gray: #1a1a22;
+
+    /* Градиенты */
+    --gradient-gold: linear-gradient(135deg, #cba25f, #e6c78e);
+    --gradient-dark: linear-gradient(135deg, #0b0b0f, #1e1e26);
+    --gradient-hero: linear-gradient(135deg, #0b0b0f 0%, #1e1e26 50%, #15151c 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--primary-bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    font-weight: 400;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Навигация */
+.navbar {
+    background: rgba(11, 11, 15, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 0;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-dark);
+}
+
+/* Бургер-меню (чтобы иконка была видна в темной теме) */
+.navbar .navbar-toggler {
+    border-color: rgba(229, 229, 229, 0.25);
+    box-shadow: none;
+}
+.navbar .navbar-toggler:focus {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 2px;
+}
+.navbar .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(229,229,229,0.85)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-brand {
+    font-family: 'Cinzel', serif;
+    font-weight: 800;
+    font-size: 1.75rem;
+    color: var(--accent-gold) !important;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.navbar-brand:hover {
+    color: #e6c78e !important;
+    text-shadow: 0 0 10px rgba(203, 162, 95, 0.5);
+}
+
+.navbar-brand .brand-icon {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 2rem;
+}
+
+.navbar-nav .nav-link {
+    color: var(--text-secondary) !important;
+    font-weight: 500;
+    padding: 0.75rem 1.25rem !important;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    margin: 0 0.25rem;
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--accent-gold) !important;
+    background-color: rgba(203, 162, 95, 0.1);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-gold);
+}
+
+.navbar-nav .nav-link.active {
+    color: var(--accent-gold) !important;
+    background-color: rgba(203, 162, 95, 0.15);
+    font-weight: 600;
+    box-shadow: var(--shadow-gold);
+}
+
+.navbar-nav .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 2px;
+    background: var(--gradient-gold);
+    border-radius: 1px;
+}
+
+.navbar-nav {
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.navbar-nav .nav-item {
+    margin: 0 0.25rem;
+    display: flex;
+    align-items: center;
+}
+
+/* Кнопки */
+.btn {
+    font-weight: 600;
+    border-radius: 4px;
+    padding: 0.875rem 1.75rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 48px;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: var(--gradient-gold);
+    color: var(--primary-bg);
+    box-shadow: var(--shadow-gold);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #e6c78e, #cba25f);
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(203, 162, 95, 0.5);
+    color: var(--primary-bg);
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--accent-gold);
+    color: var(--accent-gold);
+    background: transparent;
+}
+
+.btn-outline-primary:hover {
+    background: var(--accent-gold);
+    color: var(--primary-bg);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-gold);
+}
+
+.btn-secondary {
+    background: var(--secondary-bg);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background: var(--tertiary-bg);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+/* Карточки */
+.card {
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--shadow-dark);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-gold);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.card:hover::before {
+    transform: scaleX(1);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+}
+
+.card-header {
+    background: var(--tertiary-bg);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.5rem 2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+/* Формы */
+.form-control {
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.875rem 1.25rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+}
+
+.form-control:focus {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 4px rgba(203, 162, 95, 0.1);
+    outline: none;
+    transform: translateY(-1px);
+    background: var(--tertiary-bg);
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+/* Алерты */
+.alert {
+    border-radius: 4px;
+    border: none;
+    padding: 1.25rem 1.5rem;
+    font-weight: 500;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #1a3a1a, #2a4a2a);
+    color: #90ee90;
+    border-left: 4px solid #32cd32;
+}
+
+/* Footer */
+.footer {
+    background: var(--secondary-bg);
+    border-top: 1px solid var(--border-color);
+    padding: 3rem 0;
+    margin-top: 4rem;
+}
+
+.footer h5 {
+    color: var(--text-primary);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    font-family: 'Cinzel', serif;
+}
+
+.footer p {
+    color: var(--text-secondary);
+}
+
+.social-links a {
+    color: var(--text-secondary);
+    margin-right: 1.5rem;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--tertiary-bg);
+}
+
+.social-links a:hover {
+    color: var(--accent-gold);
+    transform: translateY(-2px);
+    text-shadow: 0 0 10px rgba(203, 162, 95, 0.5);
+}
+
+/* Скроллбар */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--secondary-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-gold);
+}
+
+/* Подсветка выделения текста */
+::selection {
+    background: rgba(203, 162, 95, 0.25);
+    color: var(--text-primary);
+}
+
+/* Анимации */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+    animation-fill-mode: backwards; /* Start animation even if element is scrolled past */
+}
+
+/* Мобильные стили */
+@media (max-width: 768px) {
+    .navbar-nav {
+        background: rgba(11, 11, 15, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-top: 1rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .navbar-nav .nav-link:hover {
+        transform: none;
+    }
+
+    .btn:active {
+        transform: translateY(1px);
+    }
+
+    h1, .h1 { font-size: 2.2rem; }
+    h2, .h2 { font-size: 1.8rem; }
+}
+
+/* Оптимизация производительности для мобильных */
+@media (hover: none) {
+    .btn:hover,
+    .card:hover,
+    .news-card:hover,
+    .stats-card:hover {
+        transform: none;
+    }
+}
