@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from main.models import News, ClanMember
 from django.utils import timezone
+from django.utils.text import slugify
 from datetime import timedelta
 import random
 
@@ -244,9 +245,11 @@ class Command(BaseCommand):
             days_ago = random.randint(0, 30)
             created_date = timezone.now() - timedelta(days=days_ago)
             
+            slug = slugify(news_item['title'])
             news, created = News.objects.get_or_create(
-                title=news_item['title'],
+                slug=slug,
                 defaults={
+                    'title': news_item['title'],
                     'content': news_item['content'],
                     'category': news_item['category'],
                     'author': user,

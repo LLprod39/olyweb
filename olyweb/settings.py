@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,7 +40,12 @@ CSRF_TRUSTED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
+    "unfold",  # before django.contrib.admin
+    "unfold.contrib.filters",
+    "unfold.contrib.forms",
+    "unfold.contrib.import_export",
+    "unfold.contrib.guardian",
+    "unfold.contrib.simple_history",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -138,7 +144,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Authentication settings
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/admin/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/auth/login/'
 
@@ -147,117 +153,17 @@ LOGIN_URL = '/auth/login/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Jazzmin admin theme settings
-JAZZMIN_SETTINGS = {
-    "site_title": "OlyWeb - Админка",
-    "site_header": "OlyWeb",
-    "site_brand": "OlyWeb",
-    "site_logo": None,
-    "site_logo_classes": "img-circle",
-    "site_icon": None,
-    "welcome_sign": "Добро пожаловать в админ-панель OlyWeb",
-    "copyright": "OlyWeb",
-    "search_model": [
-        "main.News",
-        "main.UsefulMaterial", 
-        "main.ClanMember",
-        "auth.User",
-    ],
-    "user_avatar": None,
-    "topmenu_links": [
-        {"name": "Главная", "url": "/", "icon": "fas fa-home"},
-        {"name": "Новости", "url": "/news/", "icon": "fas fa-newspaper"},
-        {"name": "Материалы", "url": "/materials/", "icon": "fas fa-toolbox"},
-        {"name": "Клан", "url": "/members/", "icon": "fas fa-users"},
-    ],
-    "show_sidebar": True,
-    "navigation_expanded": True,
-    "hide_apps": [],
-    "hide_models": [],
-    "icons": {
-        "auth": "fas fa-users-cog",
-        "auth.user": "fas fa-user",
-        "auth.Group": "fas fa-users",
-        "main.News": "fas fa-newspaper",
-        "main.UsefulMaterial": "fas fa-toolbox",
-        "main.ClanMember": "fas fa-user-shield",
-        "auth_app.Profile": "fas fa-id-badge",
+# Unfold theme settings
+UNFOLD = {
+    "SITE_TITLE": "OlyWeb Control Panel",
+    "SITE_HEADER": "OlyWeb",
+    "SITE_URL": "/",
+    "DASHBOARD_CALLBACK": "main.dashboard.dashboard_callback",
+    "LOGIN": {
+        "redirect_after": reverse_lazy("admin:index"),
     },
-    "default_icon_parents": "fas fa-chevron-circle-right",
-    "default_icon_children": "fas fa-circle",
-    "related_modal_active": True,
-    "custom_css": "css/admin-custom.css",
-    "custom_js": "js/admin-custom.js",
-    "show_ui_builder": False,
-    "changeform_format": "horizontal_tabs",
-    "changeform_format_overrides": {
-        "auth.user": "collapsible",
-        "auth.group": "vertical_tabs",
-        "main.News": "horizontal_tabs",
-        "main.UsefulMaterial": "horizontal_tabs",
-        "main.ClanMember": "horizontal_tabs",
+    "SIDEBAR": {
+        "show_search": True,
+        "show_all_applications": True,
     },
-    "usermenu_links": [
-        {"name": "Пользователи", "url": "admin:auth_user_changelist", "icon": "fas fa-users"},
-        {"name": "Новости", "url": "admin:main_news_changelist", "icon": "fas fa-newspaper"},
-        {"name": "Материалы", "url": "admin:main_usefulmaterial_changelist", "icon": "fas fa-toolbox"},
-        {"name": "Члены клана", "url": "admin:main_clanmember_changelist", "icon": "fas fa-user-shield"},
-        {"name": "Настройки", "url": "admin:index", "icon": "fas fa-cog"},
-    ],
-    "order_with_respect_to": [
-        "auth",
-        "main",
-        "auth_app",
-    ],
-    "icons": {
-        "auth": "fas fa-users-cog",
-        "auth.user": "fas fa-user",
-        "auth.Group": "fas fa-users",
-        "main.News": "fas fa-newspaper",
-        "main.UsefulMaterial": "fas fa-toolbox",
-        "main.ClanMember": "fas fa-user-shield",
-        "auth_app.Profile": "fas fa-id-badge",
-    },
-    "show_ui_builder": False,
-    "changeform_format": "horizontal_tabs",
-    "changeform_format_overrides": {
-        "auth.user": "collapsible",
-        "auth.group": "vertical_tabs",
-        "main.News": "horizontal_tabs",
-        "main.UsefulMaterial": "horizontal_tabs",
-        "main.ClanMember": "horizontal_tabs",
-    },
-}
-
-JAZZMIN_UI_TWEAKS = {
-    "navbar_small_text": False,
-    "footer_small_text": False,
-    "body_small_text": False,
-    "brand_small_text": False,
-    "brand_colour": "navbar-primary",
-    "accent": "accent-primary",
-    "navbar": "navbar-dark",
-    "no_navbar_border": False,
-    "navbar_fixed": True,
-    "layout_boxed": False,
-    "footer_fixed": False,
-    "sidebar_fixed": True,
-    "sidebar": "sidebar-dark-primary",
-    "sidebar_nav_small_text": False,
-    "sidebar_disable_expand": False,
-    "sidebar_nav_child_indent": True,
-    "sidebar_nav_compact_style": False,
-    "sidebar_nav_legacy_style": False,
-    "sidebar_nav_flat_style": False,
-    "theme": "darkly",
-    "dark_mode_theme": "darkly",
-    "button_classes": {
-        "primary": "btn-primary",
-        "secondary": "btn-secondary",
-        "info": "btn-info",
-        "warning": "btn-warning",
-        "danger": "btn-danger",
-        "success": "btn-success"
-    },
-    "actions_sticky_top": False
 }

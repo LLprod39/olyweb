@@ -2,5 +2,5 @@ Django==4.1.7
 Pillow==11.1.0
 selenium==4.10.0
 webdriver-manager==3.8.6
-django-jazzmin==2.6.2
 python-dotenv
+django-unfold

@@ -1,342 +1,78 @@
-{% extends "admin/base_site.html" %}
-{% load i18n static jazzmin %}
+{% extends "unfold/layouts/base_simple.html" %}
+{% load i18n unfold %}
 
-{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
-
-{% block extrastyle %}
-    {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/admin-custom.css' %}">
+{% block title %}
+    {{ site_title }} | {% trans "Dashboard" %}
 {% endblock %}
 
-{% block extrajs %}
-    {{ block.super }}
-    <script src="{% static 'js/admin-custom.js' %}"></script>
-{% endblock %}
+{% block header %}
+    {% component "unfold/components/page_header.html" with title=_("Dashboard") subtitle=_("Welcome to the control panel.") %}
+{% endblock header %}
 
 {% block content %}
-<div class="container-fluid">
-    <!-- Заголовок -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center">
-                <h1 class="h3 mb-0">
-                    <i class="fas fa-tachometer-alt me-2"></i>
-                    Панель управления OlyWeb
-                </h1>
-                <div class="d-flex gap-2">
-                    <a href="{% url 'admin:main_news_add' %}" class="btn btn-primary btn-sm">
-                        <i class="fas fa-plus me-1"></i>Новость
-                    </a>
-                    <a href="{% url 'admin:main_usefulmaterial_add' %}" class="btn btn-success btn-sm">
-                        <i class="fas fa-plus me-1"></i>Материал
-                    </a>
-                </div>
-            </div>
-        </div>
+    <div class="prose-lg mb-4">
+        <h2>{% trans "Site Statistics" %}</h2>
     </div>
 
-    <!-- Статистика -->
-    <div class="row mb-4">
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Новости
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ news_count|default:"0" }}
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-newspaper fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Users Card -->
+        {% component "unfold/components/card.html" %}
+            {% component "unfold/components/text.html" %}{% trans "Total Users" %}{% endcomponent %}
+            {% component "unfold/components/title.html" with class="text-primary-500" %}{{ users_count }}{% endcomponent %}
+        {% endcomponent %}
 
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Материалы
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ materials_count|default:"0" }}
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-toolbox fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Clan Members Card -->
+        {% component "unfold/components/card.html" %}
+            {% component "unfold/components/text.html" %}{% trans "Clan Members" %}{% endcomponent %}
+            {% component "unfold/components/title.html" with class="text-primary-500" %}{{ members_count }}{% endcomponent %}
+        {% endcomponent %}
 
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Члены клана
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ members_count|default:"0" }}
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-user-shield fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- News Card -->
+        {% component "unfold/components/card.html" %}
+            {% component "unfold/components/text.html" %}{% trans "News Articles" %}{% endcomponent %}
+            {% component "unfold/components/title.html" with class="text-primary-500" %}{{ news_count }}{% endcomponent %}
+        {% endcomponent %}
 
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Пользователи
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{ users_count|default:"0" }}
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-users fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Materials Card -->
+        {% component "unfold/components/card.html" %}
+            {% component "unfold/components/text.html" %}{% trans "Useful Materials" %}{% endcomponent %}
+            {% component "unfold/components/title.html" with class="text-primary-500" %}{{ materials_count }}{% endcomponent %}
+        {% endcomponent %}
     </div>
 
-    <!-- Быстрые действия -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card shadow">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">
-                        <i class="fas fa-bolt me-2"></i>Быстрые действия
-                    </h6>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <a href="{% url 'admin:main_news_add' %}" class="btn btn-primary btn-block">
-                                <i class="fas fa-plus me-2"></i>Добавить новость
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="{% url 'admin:main_usefulmaterial_add' %}" class="btn btn-success btn-block">
-                                <i class="fas fa-plus me-2"></i>Добавить материал
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="{% url 'admin:main_clanmember_add' %}" class="btn btn-info btn-block">
-                                <i class="fas fa-plus me-2"></i>Добавить члена клана
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="{% url 'admin:auth_user_add' %}" class="btn btn-warning btn-block">
-                                <i class="fas fa-plus me-2"></i>Добавить пользователя
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Последние новости и материалы -->
-    <div class="row mb-4">
-        <div class="col-lg-6">
-            <div class="card shadow">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">
-                        <i class="fas fa-newspaper me-2"></i>Последние новости
-                    </h6>
-                </div>
-                <div class="card-body">
-                    {% if recent_news %}
-                        <div class="list-group list-group-flush">
-                            {% for news in recent_news %}
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-1">{{ news.title }}</h6>
-                                    <small class="text-muted">{{ news.created_at|date:"d.m.Y H:i" }}</small>
-                                </div>
-                                <span class="badge badge-{% if news.is_published %}success{% else %}secondary{% endif %} badge-pill">
-                                    {% if news.is_published %}Опубликовано{% else %}Черновик{% endif %}
-                                </span>
-                            </div>
-                            {% endfor %}
-                        </div>
-                        <div class="mt-3">
-                            <a href="{% url 'admin:main_news_changelist' %}" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-list me-1"></i>Все новости
-                            </a>
-                        </div>
-                    {% else %}
-                        <p class="text-muted">Нет новостей</p>
-                        <a href="{% url 'admin:main_news_add' %}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus me-1"></i>Создать первую новость
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+        <!-- Recent News -->
+        {% component "unfold/components/card.html" %}
+            <h3 class="text-lg font-medium mb-4">{% trans "Recent News" %}</h3>
+            <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+                {% for news_item in recent_news %}
+                    <li class="py-3">
+                        <a href="{% url 'admin:main_news_change' news_item.pk %}" class="text-primary-500 hover:underline">
+                            {{ news_item.title }}
                         </a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+                        <p class="text-sm text-gray-500">{{ news_item.created_at|date:"d M Y" }}</p>
+                    </li>
+                {% empty %}
+                    <li class="py-3 text-gray-500">{% trans "No recent news." %}</li>
+                {% endfor %}
+            </ul>
+        {% endcomponent %}
 
-        <div class="col-lg-6">
-            <div class="card shadow">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">
-                        <i class="fas fa-toolbox me-2"></i>Последние материалы
-                    </h6>
-                </div>
-                <div class="card-body">
-                    {% if recent_materials %}
-                        <div class="list-group list-group-flush">
-                            {% for material in recent_materials %}
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-1">{{ material.title }}</h6>
-                                    <small class="text-muted">{{ material.created_at|date:"d.m.Y H:i" }}</small>
-                                </div>
-                                <span class="badge badge-{% if material.is_published %}success{% else %}secondary{% endif %} badge-pill">
-                                    {% if material.is_published %}Опубликовано{% else %}Черновик{% endif %}
-                                </span>
-                            </div>
-                            {% endfor %}
-                        </div>
-                        <div class="mt-3">
-                            <a href="{% url 'admin:main_usefulmaterial_changelist' %}" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-list me-1"></i>Все материалы
-                            </a>
-                        </div>
-                    {% else %}
-                        <p class="text-muted">Нет материалов</p>
-                        <a href="{% url 'admin:main_usefulmaterial_add' %}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus me-1"></i>Создать первый материал
+        <!-- Recent Materials -->
+        {% component "unfold/components/card.html" %}
+            <h3 class="text-lg font-medium mb-4">{% trans "Recent Materials" %}</h3>
+            <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+                {% for material in recent_materials %}
+                    <li class="py-3">
+                        <a href="{% url 'admin:main_usefulmaterial_change' material.pk %}" class="text-primary-500 hover:underline">
+                            {{ material.title }}
                         </a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+                        <p class="text-sm text-gray-500">{{ material.created_at|date:"d M Y" }}</p>
+                    </li>
+                {% empty %}
+                    <li class="py-3 text-gray-500">{% trans "No recent materials." %}</li>
+                {% endfor %}
+            </ul>
+        {% endcomponent %}
     </div>
-
-    <!-- Управление приложениями -->
-    {% if app_list %}
-    <div class="row">
-        <div class="col-12">
-            <div class="card shadow">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">
-                        <i class="fas fa-cogs me-2"></i>Управление приложениями
-                    </h6>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        {% for app in app_list %}
-                        <div class="col-md-6 col-lg-4 mb-4">
-                            <div class="app-{{ app.app_label }} module{% if app.app_url in request.path %} current-app{% endif %}">
-                                <div class="card h-100">
-                                    <div class="card-header">
-                                        <h6 class="mb-0">
-                                            <a href="{{ app.app_url }}" class="text-decoration-none">
-                                                <i class="fas fa-folder me-2"></i>{{ app.name }}
-                                            </a>
-                                        </h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="list-group list-group-flush">
-                                            {% for model in app.models %}
-                                            <div class="list-group-item d-flex justify-content-between align-items-center p-2">
-                                                {% if model.admin_url %}
-                                                <a href="{{ model.admin_url }}" class="text-decoration-none">
-                                                    <i class="fas fa-file me-2"></i>{{ model.name }}
-                                                </a>
-                                                {% else %}
-                                                <span class="text-muted">
-                                                    <i class="fas fa-file me-2"></i>{{ model.name }}
-                                                </span>
-                                                {% endif %}
-
-                                                <div class="btn-group btn-group-sm">
-                                                    {% if model.add_url %}
-                                                    <a href="{{ model.add_url }}" class="btn btn-outline-success btn-sm" title="Добавить">
-                                                        <i class="fas fa-plus"></i>
-                                                    </a>
-                                                    {% endif %}
-                                                    {% if model.admin_url and show_changelinks %}
-                                                        {% if model.view_only %}
-                                                        <a href="{{ model.admin_url }}" class="btn btn-outline-info btn-sm" title="Просмотр">
-                                                            <i class="fas fa-eye"></i>
-                                                        </a>
-                                                        {% else %}
-                                                        <a href="{{ model.admin_url }}" class="btn btn-outline-primary btn-sm" title="Изменить">
-                                                            <i class="fas fa-edit"></i>
-                                                        </a>
-                                                        {% endif %}
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- Полезные ссылки -->
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="card shadow">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">
-                        <i class="fas fa-link me-2"></i>Полезные ссылки
-                    </h6>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <a href="/" class="btn btn-outline-primary btn-block" target="_blank">
-                                <i class="fas fa-home me-2"></i>Главная страница
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="/news/" class="btn btn-outline-info btn-block" target="_blank">
-                                <i class="fas fa-newspaper me-2"></i>Новости
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="/materials/" class="btn btn-outline-success btn-block" target="_blank">
-                                <i class="fas fa-toolbox me-2"></i>Материалы
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="/members/" class="btn btn-outline-warning btn-block" target="_blank">
-                                <i class="fas fa-users me-2"></i>Члены клана
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock %}
