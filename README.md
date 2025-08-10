@@ -225,4 +225,4 @@ python manage.py collectstatic
 
 ---
 
-Сделано для сообщества клана Eternal в Throne and Liberty. 🚀 
+Сделано для сообщества клана Eternal в Throne and Liberty. 🚀
